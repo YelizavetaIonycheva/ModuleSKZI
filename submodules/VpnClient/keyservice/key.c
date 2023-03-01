@@ -5,7 +5,7 @@
 #include "IKEv2_Def.h"
 #include "key.h"
 
-#include "Hesh341112.h"
+//#include "Hesh341112.h"
 
 #if defined(CRYPT_GOST28147)
 #include "Gost28147.h"
@@ -534,20 +534,6 @@ unsigned char * check_key_date(unsigned char * key_data, int len_key_data, unsig
 
 	return new_key_data;
 }
-
-unsigned char * calculation_hash(unsigned char * data, int len_data) {
-	unsigned char * hesh = (unsigned char *)malloc(32);
-
-	HeshStruct HeshData;
-	HeshData.Data = data;
-	HeshData.DataLen = (unsigned int)len_data;
-	HeshData.Hesh = (unsigned char *) hesh;
-	HeshData.STATE = 0;
-	Hesh341112(HESH_LEN_256, &HeshData);
-
-	return hesh;
-}
-
 
 unsigned char * set_next_key_as_work(unsigned char * key_data, int len_key_data, unsigned char * next_key, int len_next_key, int * len_new_keys) {
 	BLOCKNOTE * blocknote;

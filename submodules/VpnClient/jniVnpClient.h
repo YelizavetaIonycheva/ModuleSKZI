@@ -138,9 +138,6 @@ Java_org_pniei_portal_vpn_VpnClient_testspeed(JNIEnv *env, jobject this, jbyteAr
 JNIEXPORT void JNICALL
 Java_org_pniei_portal_vpn_VpnClient_testspeedchain(JNIEnv *env, jobject this, jbyteArray tunnels);
 
-JNIEXPORT jbyteArray JNICALL
-Java_org_pniei_portal_vpn_VpnClient_calculationhesh(JNIEnv *env, jclass clazz, jbyteArray pass);
-
 JNIEXPORT jint JNICALL
 Java_org_pniei_portal_vpn_VpnClient_crc32(JNIEnv *env, jclass clazz, jbyteArray buff, jint off, jint len);
 

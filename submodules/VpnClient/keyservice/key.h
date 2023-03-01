@@ -57,8 +57,6 @@ unsigned char * add_key(unsigned char * key_edit, int len_key_edit, unsigned cha
 
 unsigned char * check_key_date(unsigned char * key_data, int len_key_data, unsigned char * now_date, int len_now_date, int * len_new_key_data);
 
-unsigned char * calculation_hash(unsigned char * data, int len_data);
-
 unsigned char * calculation_hash512(unsigned char * data, int len_data);
 
 unsigned char * set_next_key_as_work(unsigned char * key_data, int len_key_data, unsigned char * next_key, int len_next_key, int * len_new_keys);

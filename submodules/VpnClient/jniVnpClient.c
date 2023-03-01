@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include    "jniVnpClient.h"
-#include    "Hesh341112.h"
+//#include    "Hesh341112.h"
 #include    "crc32.h"
 #include    "IKEv2_Def.h"
 #include    "skn.h"
@@ -751,36 +751,6 @@ JNIEXPORT void JNICALL Java_org_pniei_portal_vpn_VpnClient_testspeedchain(JNIEnv
     jlen_tunnels = (*env)->GetArrayLength(env, tunnels);
 
     mmt_save_tunnel(jtunnels, jlen_tunnels);
-}
-
-JNIEXPORT jbyteArray JNICALL Java_org_pniei_portal_vpn_VpnClient_calculationhesh(JNIEnv *env, jclass clazz,
-                                                                                jbyteArray pass) {
-    unsigned char isCp;
-    unsigned char * jpass, * jhesh;
-    int jlen_pass;
-    jbyteArray hesh = NULL;
-
-    if(pass == NULL)
-        return NULL;
-
-    jpass = (unsigned char *)(*env)->GetByteArrayElements(env, pass, &isCp);
-    jlen_pass = (*env)->GetArrayLength(env, pass);
-
-    jhesh = calculation_hash(jpass, jlen_pass);
-
-    if(jhesh != NULL) {
-        hesh = (*env)->NewByteArray(env, 32);
-        if (hesh == NULL) {
-            free(jhesh);
-            return NULL;
-        }
-
-        (*env)->SetByteArrayRegion(env, hesh, 0, 32, jhesh);
-        free(jhesh);
-    }
-
-    (*env)->ReleaseByteArrayElements(env, pass, jpass, JNI_ABORT);
-    return hesh;
 }
 
 JNIEXPORT jint JNICALL

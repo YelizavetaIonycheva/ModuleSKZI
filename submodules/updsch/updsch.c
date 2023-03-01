@@ -2,6 +2,7 @@
 #include "algebra.h"
 #include "updsch.h"
 #include "gostr3411_prf.h"
+#include "cypher.h"
 
 //---------------------------------------------------------
 //Модуль эллиптической кривой
@@ -466,7 +467,7 @@ static void gen_SecureIdentifyInf(updsch_struct *updsch, unsigned char *SecureId
     //### Снять значение IdentifyInf 256 байт
     LOGD("Значение IdentifyInf");
     for(int j = 0; j < 256; j++) {
-    	usleep(1);
+    	usleep(100);
         LOGD("IdentifyInf[%i] = %02X", j, IdentifyInf[j]);
     }
 #endif	
@@ -486,7 +487,7 @@ static void gen_SecureIdentifyInf(updsch_struct *updsch, unsigned char *SecureId
     //### Снять значение SecureIdentifyInf 264 байт
 	LOGD("Значение SecureIdentifyInf");
     for(int j = 0; j < 264; j++) {
-        usleep(1);
+        usleep(100);
         LOGD("SecureIdentifyInf[%i] = %02X", j, SecureIdentifyInf[j]);
     }
 #endif
@@ -496,6 +497,7 @@ static void gen_SecureIdentifyInf(updsch_struct *updsch, unsigned char *SecureId
 		while(1);
 #endif	
 }
+
 
 void updsch_init(updsch_struct *updsch, unsigned char *SecureIdentifyInf)
 {
@@ -548,6 +550,221 @@ void updsch_gen_sp(int takt, unsigned char *m, unsigned char *sp, unsigned char 
 	//### Снять значение sp на 300 тактов
 	LOGD("Значение m : %02X %02X %02X %02X %02X %02X %02X %02X", m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7]);
 	LOGD("Значение sp: %02X %02X %02X %02X %02X %02X %02X %02X", sp[0], sp[1], sp[2], sp[3], sp[4], sp[5], sp[6], sp[7]);
+#endif
+}
+
+
+//источник энтропии r
+static unsigned char r_pp [] = {0xBC, 0xAF, 0x12, 0x05, 0x91, 0xE3, 0x7F, 0x40, 0x30, 0xC8, 0xA1, 0xF8, 0xE3, 0xE3, 0x9A, 0xBB,
+				0x0F, 0xDD, 0xA8, 0x4F, 0x91, 0xC1, 0x77, 0x24, 0x7D, 0x72, 0xFB, 0x9B, 0xEF, 0x79, 0x56, 0xEF,
+				0xA1, 0xB6, 0x6C, 0x41, 0x13, 0xC7, 0x9C, 0xC1, 0x3C, 0xC0, 0xEB, 0xF5, 0xB3, 0xDB, 0x4A, 0x3C,
+				0xAD, 0x61, 0x60, 0x13, 0x9C, 0xB6, 0x8C, 0x95, 0x6C, 0x66, 0xF2, 0xA4, 0xD9, 0xDD, 0xC3, 0x68};
+//маска
+static const unsigned char Mask_pp[] = {0x54, 0x25, 0x37, 0x1A, 0x29, 0xD4, 0x62, 0x69, 0x91, 0xCB, 0x8F, 0x49, 0x85, 0xCF, 0x09, 0xB5,
+					0x76, 0x83, 0xF6, 0x9D, 0x38, 0x91, 0x17, 0x9C, 0x6C, 0x64, 0x4E, 0x75, 0xD8, 0x33, 0x25, 0xDA};
+
+static unsigned char gen_SecureIdentifyInf_pp(unsigned char *key, unsigned char *user_id, unsigned char *SecureIdentifyInf_pp)
+{
+	int i;
+	residue r;
+	ECP_affine U;
+	residue T_init[7];
+	unsigned char Gamma_pp[42];
+	unsigned char IdentifyInf[74];
+	unsigned char IDK[32];
+	unsigned char ctx[0x60];
+
+#if LOGGING_UPDSCH
+	//### Снять значение key
+	LOGD("Значение key");
+	for(int j = 0; j < 32; j++) {
+		LOGD("key[%i] = %02X", j, key[j]);
+	}
+
+	//### Снять значение user_id
+	LOGD("Значение user_id");
+	for(int j = 0; j < 4; j++) {
+		LOGD("user_id[%i] = %02X", j, user_id[j]);
+	}
+#endif
+
+	//S0_init = rA
+	for(i = 0; i < (N - 1) * 2; i++)
+		*((unsigned char *)r + i) = r_pp[i];
+	Mod(r, r, ECp); //??????????????????????
+
+#if LOGGING_UPDSCH
+	//### Снять значение r - выход с внешнего источника энтропии в виде целого числа по модулю p
+	LOGD("Значение r - выход с внешнего источника энтропии (F1 - младший байт)");
+	for(int j = 0; j < 17; j++) {
+		LOGD("r[%i] = %04X", j, r[j]);
+	}
+#endif
+
+	Rcopy(U.x, AA[0]);
+	Rcopy(U.y, AA[1]);
+	ECPpow(&U, &U, r);
+	Mod(r, U.x, ECq);
+
+#if LOGGING_UPDSCH
+	//### Снять значение S0_init - (r)
+	LOGD("Значение S0_init = rA (29 - младший байт)");
+	for(int j = 0; j < 17; j++) {
+		LOGD("S0_init[%i] = %04X", j, r[j]);
+	}
+#endif
+
+	//T_init
+	gen_T(r, T_init, 7, AA[0], AA[1], BB[0], BB[1]);
+	//### Снять значения T_init
+#if LOGGING_UPDSCH
+	//### Снять значения T_init
+	LOGD("Значение T1_init");
+	for(int j = 0; j < 17; j++) {
+		LOGD("T1_init[%i] = %04X", j, T_init[0][j]);
+	}
+	LOGD("Значение T2_init");
+	for(int j = 0; j < 17; j++) {
+		LOGD("T2_init[%i] = %04X", j, T_init[1][j]);
+	}
+	LOGD("Значение T3_init");
+	for(int j = 0; j < 17; j++) {
+		LOGD("T3_init[%i] = %04X", j, T_init[2][j]);
+	}
+	LOGD("Значение T4_init");
+	for(int j = 0; j < 17; j++) {
+		LOGD("T4_init[%i] = %04X", j, T_init[3][j]);
+	}
+	LOGD("Значение T5_init");
+	for(int j = 0; j < 17; j++) {
+		LOGD("T5_init[%i] = %04X", j, T_init[4][j]);
+	}
+	LOGD("Значение T6_init");
+	for(int j = 0; j < 17; j++) {
+		LOGD("T6_init[%i] = %04X", j, T_init[5][j]);
+	}
+	LOGD("Значение T7_init");
+	for(int j = 0; j < 17; j++) {
+		LOGD("T7_init[%i] = %04X", j, T_init[6][j]);
+	}
+#endif
+
+	if(!cypher_magma_cfb_init((unsigned char *)T_init[3], ctx, 8, (unsigned char *)T_init[4], 8))
+        goto exit_err;
+	if(!cypher_encr_cfb(ctx, key, IDK, 32))
+        goto exit_err;
+	free_cfb(ctx);
+#if LOGGING_UPDSCH
+	//### Снять значение IDK
+	LOGD("Значение IDK");
+	for(int j = 0; j < 32; j++) {
+		LOGD("IDK[%i] = %02X", j, IDK[j]);
+	}
+#endif
+	xor(IDK, (unsigned char *)Mask_pp, IDK, 32);
+
+	//формирование IdentifyInf
+	memcpy(IdentifyInf, IDK, 32);
+	memcpy(IdentifyInf + 32, user_id, 10);
+	memcpy(IdentifyInf + 42, (unsigned char *)T_init[0], 32);
+#if LOGGING_UPDSCH
+	//### Снять значение IdentifyInf 256 байт
+	LOGD("Значение IdentifyInf");
+	for(int j = 0; j < 256; j++) {
+		usleep(100);
+		LOGD("IdentifyInf[%i] = %02X", j, IdentifyInf[j]);
+	}
+#endif
+
+	//формирование Gamma
+	memcpy(Gamma_pp, (unsigned char *)T_init[5], 32);
+	memcpy(Gamma_pp + 32, (unsigned char *)T_init[6], 10);
+#if LOGGING_UPDSCH
+	//### Снять значение Gamma
+	LOGD("Значение Gamma");
+	for(int j = 0; j < 64; j++) {
+		usleep(100);
+		LOGD("Gamma_pp[%i] = %02X", j, Gamma_pp[j]);
+	}
+#endif
+
+	//SecureIdentifyInf
+	memset(SecureIdentifyInf_pp, 0, 80);
+	xor(IdentifyInf, Gamma_pp, SecureIdentifyInf_pp + 1, 16);
+	SecureIdentifyInf_pp[17] = 0x01;
+	xor(IdentifyInf + 16, Gamma_pp + 16, SecureIdentifyInf_pp + 18, 16);
+	SecureIdentifyInf_pp[34] = 0x02;
+	xor(IdentifyInf + 32, Gamma_pp + 32, SecureIdentifyInf_pp + 35, 10);
+	memcpy(SecureIdentifyInf_pp + 45, (unsigned char *)T_init[0], 6);
+	SecureIdentifyInf_pp[51] = 0x03;
+	memcpy(SecureIdentifyInf_pp + 52, (unsigned char *)T_init[0] + 6, 16);
+	SecureIdentifyInf_pp[68] = 0x04;
+	memcpy(SecureIdentifyInf_pp + 69, (unsigned char *)T_init[0] + 22, 10);
+	SecureIdentifyInf_pp[79] = 0x05;
+#if LOGGING_UPDSCH
+	//### Снять значение SecureIdentifyInf 264 байт
+	LOGD("Значение SecureIdentifyInf_pp");
+	for(int j = 0; j < 264; j++) {
+		usleep(100);
+		LOGD("SecureIdentifyInf_pp[%i] = %02X", j, SecureIdentifyInf_pp[j]);
+	}
+#endif
+	return 0;
+exit_err:
+	free_cfb(ctx);
+    return 1;
+}
+
+unsigned char updsch_init_pp(unsigned char *key, unsigned char *user_id, unsigned char *SecureIdentifyInf_pp)
+{
+	int i;
+	residue Tmp, Tmp1;
+	
+	Rcopy(ECp, p);
+	Rcopy(ECq, q);
+	
+	//Определение z = -P0^(-1)(mod b) (используется в умножении Монтгомери) 
+	ECp0inv = Findz(ECp[0]);
+	ECq0inv = Findz(ECq[0]);
+	if((!ECp0inv) || (!ECq0inv))
+	{
+		ECp0inv = ECq0inv = 0;
+		return 1;
+	}
+	//Определение e = (2^16)^N(mod P) (проективная координата Z) 
+	Finde(ECe_p, ECp);
+	Finde(ECe_q, ECq);
+	//Проверка
+	Rmul(Tmp,  ECe_p, ECe_p, ECp);
+	Rmul(Tmp1, ECe_q, ECe_q, ECq);
+	for(i = 0; i < (N - 1); i++)
+	{
+		if((Tmp[i] != ECe_p[i]) || (Tmp1[i] != ECe_q[i]))
+		{
+			ECp0inv = ECq0inv = 0;
+			return 1;
+		}
+	}
+	//Определение e2 = e^2(mod P)
+	Mul(ECe2_p, ECe_p, ECe_p, ECp);
+	Mul(ECe2_q, ECe_q, ECe_q, ECq);
+	GF2MF(ECae, a, ECe2_p, ECp);
+	GF2MF(ECbe, b, ECe2_p, ECp);
+	//Нахождение P-2 и Q-2 (для вычисления обратного элемента)
+	Rsub(ECp_2, ECp, Const2, ECp);
+	Rsub(ECq_2, ECq, Const2, ECq);
+
+	//Формирование SecureIdentifyInf
+	return gen_SecureIdentifyInf_pp(key, user_id, SecureIdentifyInf_pp);
+}
+
+void updsch_gen_sp_pp(int takt, unsigned char *m_pp, unsigned char *sp_pp, unsigned char *SecureIdentifyInf_pp) 
+{
+	xor(SecureIdentifyInf_pp + takt, m_pp, sp_pp, 8);
+#if LOGGING_UPDSCH
+	//### Снять значения m_pp и sp_pp
+	LOGD("Значение m_pp : %02X %02X %02X %02X %02X %02X %02X %02X", m_pp[0], m_pp[1], m_pp[2], m_pp[3], m_pp[4], m_pp[5], m_pp[6], m_pp[7]);
+	LOGD("Значение sp_pp: %02X %02X %02X %02X %02X %02X %02X %02X", sp_pp[0], sp_pp[1], sp_pp[2], sp_pp[3], sp_pp[4], sp_pp[5], sp_pp[6], sp_pp[7]);
 #endif
 }
 

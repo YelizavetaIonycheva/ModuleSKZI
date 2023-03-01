@@ -6,11 +6,13 @@ LOCAL_MODULE:= libcryptutils
 LOCAL_SRC_FILES := \
 	jniCryptUtils.c \
 	crc32.c \
-	Hesh341112.c \
 	CryptUtils.c \
 
 LOCAL_C_INCLUDES := \
-	$(LOCAL_PATH)/
+	$(LOCAL_PATH)/ \
+	$(LOCAL_PATH)/../updsch \
+	$(LOCAL_PATH)/../hesh341112 \
+
 
 ifeq ($(BUILD_MAGMA), true)
 	LOCAL_SHARED_LIBRARIES :=  libmagma
@@ -26,7 +28,9 @@ else
 	LOCAL_CFLAGS += -DCRYPT_GOST28147
 endif
 
-//LOCAL_CFLAGS += -Wno-parentheses -Wno-int-to-pointer-cast -Wno-incompatible-pointer-types -Wno-shift-count-overflow
-//LOCAL_CFLAGS +=	-fstack-protector -frtti -ffunction-sections -fno-exceptions -fdata-sections
+LOCAL_SHARED_LIBRARIES +=  libupdsch libhesh341112
+
+#LOCAL_CFLAGS += -Wno-parentheses -Wno-int-to-pointer-cast -Wno-incompatible-pointer-types -Wno-shift-count-overflow
+#LOCAL_CFLAGS += -fstack-protector -frtti -ffunction-sections -fno-exceptions -fdata-sections
 
 include $(BUILD_SHARED_LIBRARY)

@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">ModuleSKZI</string>
+    <string name="app_name">ImpulseVS</string>
 
 
 
 
-    <string name="app_label">Модуль СКЗИ</string>
+    <string name="app_label">Импульс ВС</string>
     <string name="company_label">АО \"ПНИЭИ\"</string>
     <string name="check_license">Проверка лицензии</string>
     <string name="license_number">Код лицензии</string>

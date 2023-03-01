@@ -3,6 +3,7 @@
 
 #include "updsch.h"
 #include "updsch_manager.h"
+#include "Hesh341112.h"
 
 static updsch_struct updsch = {
 	//ключ ДСЧ без маски
@@ -43,11 +44,31 @@ static int counter_updsch = 0;
 static unsigned char m[8];
 static unsigned char sp[8];
 
-unsigned char init_updsch(unsigned char * key_dsch, unsigned char * key, unsigned char * table, unsigned char *SecureIdentifyInf){
+unsigned char init_updsch(unsigned char * key_dsch, unsigned char * key, unsigned char * table, unsigned char *SecureIdentifyInf, unsigned char * init_data){
+	HeshStruct HeshData;
+	unsigned char hash[32];
+
 	if(key_dsch == NULL || key == NULL || table == NULL) {
 		return 1;
 	}
-	
+
+	//переинициализация УПДСЧ в зависимости от введенного КБ
+	HeshData.Data     = init_data; //указатель на начало блокнота *.C
+	HeshData.DataLen = 20;
+	HeshData.Hesh     = hash;
+	HeshData.STATE    = TR_NO;
+
+	Hesh341112(HESH_LEN_256, &HeshData);
+	for(int i = 0, j = 0; i < 64; i++)
+	{
+		updsch.r[i] ^= hash[j++];
+		if(j == 32)
+			j = 0;
+	}
+	for(int i = 0, j = 0; i < 32; i++, j++){
+		updsch.k[i] ^= hash[j];
+	}
+
 	memcpy(updsch.k_dsch, key_dsch, 32);
 	memcpy(updsch.k_ij, key, 32);
 	memcpy(updsch.tz, table, 64);
@@ -73,7 +94,7 @@ unsigned char init_updsch(unsigned char * key_dsch, unsigned char * key, unsigne
 #endif
 	//Инициализация УПДСЧ
 	updsch_init(&updsch, SecureIdentifyInf);
-	
+
 	return 0;
 }
 
@@ -85,10 +106,39 @@ unsigned char * get_random(unsigned char *SecureIdentifyInf){
 
 	if(SecureIdentifyInf != NULL)
 		updsch_gen_sp(counter_updsch, m, sp, SecureIdentifyInf);
-	
+
 	counter_updsch++;
 	if(counter_updsch >= 257)
 		counter_updsch = 0;
 
 	return sp;
+}
+
+static int counter_updsch_pp = 0;
+static unsigned char m_pp[8];
+static unsigned char sp_pp[8];
+
+unsigned char init_updsch_pp(unsigned char *key, unsigned char *user_id, unsigned char *SecureIdentifyInf_pp)
+{
+	if(key == NULL || user_id == NULL || SecureIdentifyInf_pp == NULL) 
+		return 1;
+	
+	return updsch_init_pp(key, user_id, SecureIdentifyInf_pp);
+}
+
+unsigned char * get_random_pp(unsigned char *SecureIdentifyInf_pp)
+{
+	if(counter_updsch_pp == 0) {
+		*(unsigned int *)m_pp = rand(); //random
+		*(unsigned int *)(m_pp + 4) = rand(); //random
+	}
+
+	if(SecureIdentifyInf_pp != NULL)
+		updsch_gen_sp_pp(counter_updsch_pp, m_pp, sp_pp, SecureIdentifyInf_pp);
+	
+	counter_updsch_pp++;
+	if(counter_updsch_pp >= 73)
+		counter_updsch_pp = 0;
+		
+	return sp_pp;
 }

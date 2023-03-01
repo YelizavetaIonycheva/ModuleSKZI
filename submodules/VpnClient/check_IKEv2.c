@@ -275,7 +275,11 @@ unsigned int ikev2_check_ike_sa_init(unsigned char *data, int lenData, IKEv2_STR
 		}
 	}
 
-	init_updsch((unsigned char *)ikev2_sa->blockNote.key_dsh, (unsigned char *)ikev2_sa->blockNote.key, tz, ikev2_sa->SecureIdentifyInf);
+	init_updsch((unsigned char *)ikev2_sa->blockNote.key_dsh,
+				(unsigned char *)ikev2_sa->blockNote.key,
+				tz,
+				ikev2_sa->SecureIdentifyInf,
+				(unsigned char *)&(ikev2_sa->blockNote));
 
 	if(ikev2_sa->nonceR != NULL) {
 		free(ikev2_sa->nonceR);

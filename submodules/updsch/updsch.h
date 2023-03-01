@@ -18,6 +18,8 @@ typedef struct
 
 void updsch_init(updsch_struct *updsch, unsigned char *SecureIdentifyInf);
 void updsch_gen_sp(int takt, unsigned char *m, unsigned char *sp, unsigned char *SecureIdentifyInf);
+void updsch_gen_sp_pp(int takt, unsigned char *m_pp, unsigned char *sp_pp, unsigned char *SecureIdentifyInf_pp); 
+unsigned char updsch_init_pp(unsigned char *key, unsigned char *user_id, unsigned char *SecureIdentifyInf_pp);
 
 #define TAG "UPDSCH_LOG"
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)

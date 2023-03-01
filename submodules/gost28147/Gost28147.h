@@ -23,8 +23,8 @@ __attribute__((optnone)) void  gost_elem(unsigned int *n1,unsigned int *n2,unsig
 #define ENCRYPT				0x1				//шифрование
 #define DECRYPT				0x2				//расшифрование
 
-#define TR_NO				0x0				//не использовать промежуточное состояние
-#define TR_YES				0x1				//использовать промежуточное состояние
+//#define TR_NO				0x0				//не использовать промежуточное состояние
+//#define TR_YES				0x1				//использовать промежуточное состояние
 
 #define LEN_IMZ_4			4				// Длина имитозащиты 8 байт
 #define LEN_IMZ_8			8				// Длина имитозащиты 4 байта

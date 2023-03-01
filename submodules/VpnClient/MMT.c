@@ -1043,10 +1043,11 @@ unsigned int mmt_check_ike_sa_a_init(unsigned char *data_in, int len_data_in,
     if(ikev2_sa_a->SecureIdentifyInf != NULL)
         free(ikev2_sa_a->SecureIdentifyInf);
     ikev2_sa_a->SecureIdentifyInf = (unsigned char *)malloc(264);
-    init_updsch((unsigned char *)ikev2_sa_a->blockNote.key_dsh, 
-    			(unsigned char *)ikev2_sa_a->blockNote.key, 
-    			(unsigned char *)ikev2_sa_a->blockNote.Table, 
-    			ikev2_sa_a->SecureIdentifyInf);
+    init_updsch((unsigned char *)ikev2_sa_a->blockNote.key_dsh,
+                (unsigned char *)ikev2_sa_a->blockNote.key,
+                (unsigned char *)ikev2_sa_a->blockNote.Table,
+                ikev2_sa_a->SecureIdentifyInf,
+                (unsigned char *)&(ikev2_sa_a->blockNote));
 
     if(isResponder) {
         if (ikev2_sa_a->nonceI != NULL) {
