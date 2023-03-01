@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<PreferenceCategory
+	    android:title="@string/pref_preferences_title">
+
+		<PreferenceScreen
+			android:title="@string/pref_ip_address_title"
+			android:key="@string/pref_ip_address_key"
+			android:icon="@drawable/ic_ip_address"
+			android:persistent="false">
+
+			<PreferenceCategory
+				android:title="@string/pref_ip_address_title">
+
+				<EditTextPreference
+					android:title="@string/pref_ip_skzi_title"
+					android:key="@string/pref_ip_skzi_key"
+					android:persistent="false"/>
+
+				<EditTextPreference
+					android:title="@string/pref_ip_mon_title"
+					android:key="@string/pref_ip_mon_key"
+					android:persistent="false"/>
+
+				<EditTextPreference
+					android:title="@string/pref_ip_dns_title"
+					android:key="@string/pref_ip_dns_key"
+					android:persistent="false"/>
+
+				<EditTextPreference
+					android:title="@string/pref_ip_dns_second_title"
+					android:key="@string/pref_ip_dns_second_key"
+					android:persistent="false"/>
+
+			</PreferenceCategory>
+
+		</PreferenceScreen>
+
+		<PreferenceScreen
+			android:title="@string/pref_vpn_info_title"
+			android:key="@string/pref_vpn_info_key"
+			android:icon="@drawable/ic_vpn_key"
+			android:persistent="false">
+
+			<PreferenceCategory
+				android:title="@string/pref_skzi_title"
+				android:key="@string/pref_skzi_key">
+
+				<Preference
+					android:title="@string/pref_connect_skzi_time_error"
+					android:key="@string/pref_connect_skzi_time_error_key"
+					app:isPreferenceVisible="false"
+					android:persistent="false"/>
+
+				<SwitchPreferenceCompat
+					android:title="@string/pref_slzi_capture_all_apps"
+					android:key="@string/pref_skzi_capture_all_apps_key"
+					android:persistent="false"/>
+
+				<MultiSelectListPreference
+					android:title="@string/pref_work_with_vpn_title"
+					android:key="@string/pref_work_with_vpn_key"
+					android:persistent="false"/>
+
+			</PreferenceCategory>
+
+			<PreferenceCategory
+				android:title="@string/pref_key_compl_title"
+				android:key="@string/pref_key_compl_key">
+
+				<PreferenceScreen
+					android:title="@string/key_working_settings_title"
+					android:key="@string/pref_key_working_compl_key">
+
+					<PreferenceCategory
+						android:title="@string/key_working_settings_title">
+
+						<Preference
+							android:key="@string/pref_key_w_name_komplect_key"
+							android:title="@string/key_name_komplect_title"
+							android:persistent="false"/>
+
+						<Preference
+							android:key="@string/pref_key_w_num_serial_key"
+							android:title="@string/key_num_serial_title"
+							android:persistent="false"/>
+
+						<Preference
+							android:key="@string/pref_key_w_num_komplect_key"
+							android:title="@string/key_num_komplect_title"
+							android:persistent="false"/>
+
+						<Preference
+							android:key="@string/pref_key_w_date_begin_key"
+							android:title="@string/key_date_begin_title"
+							android:persistent="false"/>
+
+						<Preference
+							android:key="@string/pref_key_w_date_end_key"
+							android:title="@string/key_date_end_title"
+							android:persistent="false"/>
+					</PreferenceCategory>
+				</PreferenceScreen>
+
+			</PreferenceCategory>
+
+		</PreferenceScreen>
+
+		<PreferenceScreen
+			android:title="@string/biometry_settings"
+			android:key="@string/pref_biometry_settings_key"
+			android:icon="@drawable/ic_face"
+			android:persistent="false">
+
+			<PreferenceCategory
+				android:key="@string/pref_biometry_settings_cat_key"
+				android:title="@string/biometry_settings">
+
+				<Preference
+					android:key="pref_delete_biometry"
+					android:title="@string/new_biometry_title"
+					android:persistent="false"/>
+
+				<Preference
+					android:key="pref_create_biometry"
+					android:title="@string/create_biometry_title"
+					android:persistent="false"/>
+
+				<Preference
+					android:key="pref_update_biometry"
+					android:title="@string/update_biometry_title"
+					android:persistent="false"/>
+
+				<Preference
+					android:key="pref_export_biometry"
+					android:title="@string/export_biometry_title"
+					android:persistent="false"/>
+
+				<Preference
+					android:key="pref_import_biometry"
+					android:title="@string/import_biometry_title"
+					android:persistent="false"/>
+			</PreferenceCategory>
+
+		</PreferenceScreen>
+
+		<PreferenceScreen
+		    android:title="@string/pref_advanced_title"
+		    android:key="@string/pref_advanced_key">
+
+		    <PreferenceCategory
+				android:title="@string/pref_advanced_title">
+
+				<Preference
+					android:title="@string/pref_export_logs_title"
+					android:key="@string/pref_export_logs_key"
+					android:persistent="false"
+					android:icon="@drawable/ic_book"/>
+
+				<Preference
+					android:title="@string/pref_background_work_title"
+					android:key="@string/pref_background_work_key"
+					android:persistent="false"
+					android:icon="@drawable/ic_battery"/>
+
+			</PreferenceCategory>
+
+		</PreferenceScreen>
+
+	</PreferenceCategory>
+
+</PreferenceScreen>

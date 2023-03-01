@@ -1,0 +1,181 @@
+<resources>
+    <string name="app_name">ModuleSKZI</string>
+
+
+
+
+    <string name="app_label">Модуль СКЗИ</string>
+    <string name="company_label">АО \"ПНИЭИ\"</string>
+    <string name="check_license">Проверка лицензии</string>
+    <string name="license_number">Код лицензии</string>
+    <string name="check">проверка</string>
+    <string name="check_license_info">Сообщите АО \"ПНИЭИ\" свой идентификатор устройства и получите ключ лицензии. Полученный ключ введите ниже.</string>
+    <string name="license_number_not_enter">Код не введен</string>
+    <string name="license_number_enter_error">Введено неверно</string>
+    <string name="license_number_error">Неверный код</string>
+    <string name="select_config_info">Введите конфигурационные данные</string>
+    <string name="config_file">Файл конфигурации</string>
+    <string name="enter">Ввод</string>
+    <string name="next">Далее</string>
+    <string name="prefs_set">Инициализация</string>
+    <string name="prefs_set_info">Выберите файл конфигурации</string>
+    <string name="err_file_not_select">Файл конфигурации не найден</string>
+    <string name="err_file_cfg_not_found">Файл конфигурации не найден</string>
+    <string name="init_config_error">Ошибка файла конфигурации</string>
+    <string name="err_file_key_not_found">Ключевой файл не найден</string>
+    <string name="err_key_save">Ошибка сохранения ключа</string>
+    <string name="registration_info">Укажите пароль доступа</string>
+    <string name="password">Пароль</string>
+    <string name="repeat_password">Повтор пароля</string>
+    <string name="err_empty_password">Пароль не введен</string>
+    <string name="err_lenght_password">Короткий пароль</string>
+    <string name="err_not_match_password">Пароли не совпадают</string>
+    <string name="no">Нет</string>
+    <string name="ok">OK</string>
+    <string name="yes">Да</string>
+    <string name="request_permission">Для работы с камерой нужны права</string>
+    <string name="button_back">Назад</string>
+    <string name="button_clear_log">Очистить</string>
+
+
+    <string name="dialog_select_file">Выберите файл</string>
+    <string name="dialog_select_dir">Укажите каталог</string>
+    <string name="dialog_export_images">Экспорт изображений</string>
+    <string name="dialog_select_config_file">Выберите файл конфигурации</string>
+    <string name="dialog_select_key_file">Выберите ключевой файл</string>
+    <string name="dialog_select_qr_file">Выберите файл qr-кода</string>
+    <string name="dialog_enter_pass">Введите пароль</string>
+    <string name="dialog_select_zip_file">Выберите архив конфигурации</string>
+    <string name="dialog_wait">Пожалуйста подождите</string>
+
+    <!-- Биометрия -->
+    <string name="biometry_settings">Биометрия</string>
+    <string name="new_biometry_title">Удалить биометрический контейнер</string>
+    <string name="create_biometry_title">Создать биометрический контейнер</string>
+    <string name="update_biometry_title">Переобучить биометрический контейнер</string>
+    <string name="info_biometry_title">Информация о стойкости нейросетевого биометрического контейнера</string>
+    <string name="export_biometry_title">Экспорт биометрического контейнера</string>
+    <string name="import_biometry_title">Импорт биометрического контейнера</string>
+    <string name="info_create_biometry">Будет создан биометрический контейнер, обученный формированию из лица пользователя пароля доступа.\nДля более качественного обучения рекомендуется снимать лицо под разными углами</string>
+    <string name="info_update_biometry">Биометрический контейнер будет переобучен.\nДля более качественного обучения рекомендуется снимать лицо под разными углами</string>
+    <string name="info_export_biometry">Биометрический контейнер будет зашифрован на пароле аутентификации и записан в файл \"ImpulseBiom.bc\" в указанный каталог </string>
+    <string name="info_import_biometry">Выберите файл биометрического контейнера и введите пароль на котором он был зашифрован</string>
+    <string name="info_biometry">Информация о стойкости нейросетевого биометрического контейнера</string>
+    <string name="biometry_train_info">Привязать биометрические данные ?</string>
+    <string name="pass_error">Неверный пароль</string>
+    <string name="pref_biometry_settings_key">pref_biometry_settings_key</string>
+    <string name="pref_biometry_settings_cat_key">pref_biometry_settings_cat_key</string>
+
+    <!-- VPN Client -->
+    <string name="vpn_start">Старт</string>
+    <string name="vpn_stop">Стоп</string>
+    <string name="vpn_not_connecting">Соединение не установлено</string>
+    <string name="vpn_connecting">Установка соединения...</string>
+    <string name="vpn_connected">Соединение установлено</string>
+    <string name="vpn_disconnected">Соединение разорвано!</string>
+    <string name="vpn_server_disconnected">Сервер разорвал соединение</string>
+    <string name="vpn_server_not_available">Сервер недоступен</string>
+    <string name="vpn_faild_connect_to_server">Ошибка подключения к серверу</string>
+    <string name="vpn_wifi_mobdata_not_active">Wi-Fi или Мобильные данные отключены</string>
+    <string name="bad_ip_skzi_address">Некоректный адрес СКЗИ</string>
+    <string name="start_connecting">Запустить</string>
+    <string name="stop_connecting">Остановить</string>
+    <string name="start_time_dif_info">Рассинхронизация времени\nВремя сервера</string>
+    <string name="kompl_number">Номер комплекта:</string>
+    <string name="serial_number">Номер серии:</string>
+    <string name="show_pass">Показать пароль</string>
+    <string name="wan_ip">WAN IP:</string>
+    <string name="lan_ip">LAN IP:</string>
+    <string name="speed_in">Прием (kB/s):</string>
+    <string name="speed_out">Передача (kB/s):</string>
+    <string name="vpn_configuration_error_info">"Ошибка установки соединения. Проверьте настройки соединения"</string>
+    <string name="connection_quality">Качество:</string>
+    <string name="connection_quality_non"> </string>
+    <string name="connection_quality_high">Высокое</string>
+    <string name="connection_quality_middle">Среднее</string>
+    <string name="connection_quality_low">Низкое</string>
+    <string name="vpn_status">Статус:</string>
+    <string name="vpn_in_speed">Прием кБ/с:</string>
+    <string name="vpn_out_speed">Отправка кБ/с:</string>
+    <string name="vpn_wan_ip">wan ip:</string>
+    <string name="vpn_lan_ip">lan ip:</string>
+
+    <string name="service_name">Служба Модуль СКЗИ</string>
+    <string name="notification_service_channel_id">notification_service_id</string>
+    <string name="content_title_notification_service">Служба Модуль СКЗИ</string>
+    <string name="import_code_from_file">Ввод из файла</string>
+    <string name="import_code_from_file_info">Укажите файл с кодом лицензии</string>
+    <string name="cancel">Отмена</string>
+    <string name="import_code_qr_code">Ввод из QR-кода</string>
+    <string name="import_code_from_qr_code_info">Отсканируйте QR-коде с кодом лицензии</string>
+    <string name="menu_settings">Настройки</string>
+
+    <!--  Settings Fragment  -->
+    <string name="pref_preferences_title">Настройки</string>
+        <!-- IP Адреса -->
+    <string name="pref_ip_address_title">IP Адреса</string>
+    <string name="pref_ip_skzi_title">WAN СКЗИ</string>
+    <string name="pref_ip_mon_title">Сервер мониторинга ключей</string>
+    <string name="pref_ip_dns_title">DNS</string>
+    <string name="pref_ip_dns_second_title">DNS дополнительный</string>
+        <!-- VPN Соединение -->
+    <string name="pref_vpn_info_title">VPN соединение</string>
+            <!-- СКЗИ -->
+    <string name="pref_skzi_title">СКЗИ</string>
+    <string name="pref_connect_skzi_title">Соединение с СКЗИ</string>
+    <string name="pref_connect_skzi_time_error">Ошибка синхронизации времени</string>
+    <string name="pref_work_with_vpn_title">Работают через VPN</string>
+    <string name="pref_skzi_key">pref_skzi_key</string>
+            <!-- Комплекты ключей -->
+    <string name="pref_key_compl_title">Комплекты ключей</string>
+    <string name="key_working_settings_title">Комплект ключей (действующий)</string>
+    <string name="key_next_settings_title">Комплект ключей (очередной)</string>
+    <string name="key_num_komplect_title">Номер комплекта</string>
+    <string name="key_name_komplect_title">Наименование комплекта</string>
+    <string name="key_num_serial_title">Номер серии</string>
+    <string name="key_num_of_keys_title">Количество ключей</string>
+    <string name="key_date_begin_title">Дата начала действия комплекта</string>
+    <string name="key_date_end_title">Дата конца действия комплекта</string>
+        <!-- Дополнительно -->
+    <string name="pref_advanced_title">Дополнительно</string>
+    <string name="pref_export_logs_title">Просмотр журнала работы с СКЗИ</string>
+    <string name="pref_background_work_title">Контроль фоновой активности</string>
+
+    <string name="pref_export_logs_key">pref_export_logs_key</string>
+    <string name="pref_update_po_key">pref_update_po_key</string>
+    <string name="pref_change_regime_key">pref_change_regime_key</string>
+    <string name="pref_background_work_key">pref_background_work_key</string>
+    <string name="pref_export_settings_key">pref_export_settings_key</string>
+    <string name="pref_import_settings_key">pref_import_settings_key</string>
+
+    <string name="pref_ip_address_key">pref_ip_address_key</string>
+    <string name="pref_id_name_key">pref_id_name_key</string>
+    <string name="pref_ip_skzi_key">pref_ip_skzi_key</string>
+    <string name="pref_ip_mon_key">pref_ip_mon_key</string>
+    <string name="pref_ip_dns_key">pref_ip_dns_key</string>
+    <string name="pref_ip_dns_second_key">pref_ip_dns_second_key</string>
+    <string name="pref_num_skzi_key">pref_num_skzi_key</string>
+    <string name="pref_vpn_info_key">pref_key_info_key</string>
+    <string name="pref_key_compl_key">pref_key_compl_key</string>
+    <string name="pref_connect_skzi_time_error_key">pref_connect_skzi_time_error_key</string>
+    <string name="pref_work_with_vpn_key">pref_work_with_vpn_key</string>
+    <string name="pref_key_working_compl_key">pref_key_working_compl_key</string>
+    <string name="pref_key_next_compl_key">pref_key_next_compl_key</string>
+
+    <string name="pref_key_w_name_komplect_key">pref_key_w_name_komplect_key</string>
+    <string name="pref_key_w_num_serial_key">pref_key_w_num_serial_key</string>
+    <string name="pref_key_w_num_komplect_key">pref_key_w_num_komplect_key</string>
+    <string name="pref_key_w_num_of_keys_key">pref_key_w_num_of_keys_key</string>
+    <string name="pref_key_w_date_begin_key">pref_key_w_date_begin_key</string>
+    <string name="pref_key_w_date_end_key">pref_key_w_date_end_key</string>
+    <string name="pref_advanced_key">pref_advanced_key</string>
+    <string name="pref_key_n_name_komplect_key">pref_key_n_name_komplect_key</string>
+    <string name="pref_key_n_num_serial_key">pref_key_n_num_serial_key</string>
+    <string name="pref_key_n_num_komplect_key">pref_key_n_num_komplect_key</string>
+    <string name="pref_key_n_num_of_keys_key">pref_key_n_num_of_keys_key</string>
+    <string name="pref_key_n_date_begin_key">pref_key_n_date_begin_key</string>
+    <string name="pref_key_n_date_end_key">pref_key_n_date_end_key</string>
+    <string name="pref_slzi_capture_all_apps">Захват всего трафика</string>
+    <string name="pref_skzi_capture_all_apps_key">pref_skzi_capture_all_apps_key</string>
+    <string name="about_app">О приложении</string>
+</resources>

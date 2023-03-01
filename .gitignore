@@ -1,0 +1,8 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+/app/build
+/DWFace
+/app/src/main/jniLibs
+/app/release

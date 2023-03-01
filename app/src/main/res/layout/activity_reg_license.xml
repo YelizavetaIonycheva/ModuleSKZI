@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/fontLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/check_license"
+        app:layout_constraintBottom_toTopOf="@id/checkLicenseInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/checkLicenseInfo"
+        style="@style/fontInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/check_license_info"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label"
+        app:layout_constraintBottom_toTopOf="@id/deviceId" />
+
+    <TextView
+        android:id="@+id/deviceId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="id: 123456780"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/textColorSecondary"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkLicenseInfo"
+        app:layout_constraintBottom_toTopOf="@id/licenseNumberLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/licenseNumberLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/license_number"
+        app:errorEnabled="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deviceId"
+        app:layout_constraintBottom_toTopOf="@id/btnCheck">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/licenseNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:digits="0123456789abcdefABCDEF"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/btnCodeFromFile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_file"
+        android:padding="4dp"
+        app:layout_constraintStart_toStartOf="@id/licenseNumberLayout"
+        app:layout_constraintTop_toBottomOf="@id/licenseNumberLayout" />
+
+    <ImageButton
+        android:id="@+id/btnCodeFromQRcode"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_qr_code_scanner"
+        android:padding="4dp"
+        app:layout_constraintStart_toEndOf="@id/btnCodeFromFile"
+        app:layout_constraintTop_toBottomOf="@id/licenseNumberLayout" />
+
+    <Button
+        android:id="@+id/btnCheck"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/check"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/licenseNumberLayout"
+        app:layout_constraintTop_toBottomOf="@+id/licenseNumberLayout" />
+
+    <ProgressBar
+        android:id="@+id/progressPar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/btnCheck"
+        app:layout_constraintEnd_toStartOf="@id/btnCheck"
+        app:layout_constraintTop_toTopOf="@id/btnCheck"
+        tools:visibility="invisible" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

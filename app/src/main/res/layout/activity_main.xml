@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topBar"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/app_label"
+        app:titleTextColor="@color/colorOnPrimary"
+        app:menu="@menu/main_menu"
+        app:navigationIcon="@mipmap/ic_launcher"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            style="@style/fontLabel"
+            android:id="@+id/textVpnStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/vpnQualityStroke"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vpnQualityStroke"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textVpnStatus"
+            app:layout_constraintBottom_toTopOf="@id/btnStartVpn"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <ImageView
+                android:id="@+id/imageDownload"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/ic_download"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/textVpnInSpeed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/textVpnInSpeed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                app:layout_constraintStart_toEndOf="@id/imageDownload"
+                app:layout_constraintEnd_toStartOf="@id/vpnQuality"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="1000"
+                android:gravity="center"/>
+
+            <ImageView
+                android:id="@+id/vpnQuality"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/ic_vpn_quality_off"
+                app:layout_constraintStart_toEndOf="@id/textVpnInSpeed"
+                app:layout_constraintEnd_toStartOf="@id/textVpnOutSpeed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"/>
+
+            <TextView
+                android:id="@+id/textVpnOutSpeed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                app:layout_constraintStart_toEndOf="@id/vpnQuality"
+                app:layout_constraintEnd_toStartOf="@id/imageUpload"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="1000"
+                android:gravity="center"/>
+
+            <ImageView
+                android:id="@+id/imageUpload"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/ic_upload"
+                app:layout_constraintStart_toEndOf="@id/textVpnOutSpeed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btnStartVpn"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="@string/vpn_start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vpnQualityStroke"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="32dp"/>
+
+<!--
+
+        <LinearLayout
+            android:id="@+id/tableInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btnStartVpn"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vpn_status"/>
+                <TextView
+                    android:id="@+id/textVpnStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vpn_in_speed"/>
+                <TextView
+                    android:id="@+id/textVpnInSpeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vpn_out_speed"/>
+                <TextView
+                    android:id="@+id/textVpnOutSpeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vpn_wan_ip"/>
+                <TextView
+                    android:id="@+id/textVpnWanIp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vpn_lan_ip"/>
+                <TextView
+                    android:id="@+id/textVpnLanIp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+-->
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
