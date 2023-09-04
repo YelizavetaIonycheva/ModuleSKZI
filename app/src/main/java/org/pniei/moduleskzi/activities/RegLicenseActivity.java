@@ -14,24 +14,16 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.documentfile.provider.DocumentFile;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.pniei.moduleskzi.R;
-import org.pniei.moduleskzi.databinding.ActivityRegLicenseBinding;
+import org.pniei.portal.R;
+import org.pniei.portal.databinding.ActivityRegLicenseBinding;
 import org.pniei.moduleskzi.qrcode.QRCodeScanActivity;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 import org.pniei.moduleskzi.utils.Signature;
 import org.pniei.moduleskzi.utils.Utils;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

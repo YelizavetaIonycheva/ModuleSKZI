@@ -9,14 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.fragments.AboutFragment;
 import org.pniei.moduleskzi.fragments.SettingsFragment;
 import org.pniei.moduleskzi.listener.OnBackClickListener;
 import org.pniei.moduleskzi.utils.PrefsUtils;
-import org.pniei.portal.services.MonitoringService;
-import org.pniei.portal.vpn.VpnClient;
 
 public class SecondaryActivity extends AppCompatActivity {
     // Ключи принимаемых параметров

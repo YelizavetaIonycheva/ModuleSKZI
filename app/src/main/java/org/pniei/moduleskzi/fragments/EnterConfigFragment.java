@@ -13,18 +13,15 @@ import android.view.ViewGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.activities.LoginActivity;
-import org.pniei.moduleskzi.databinding.FragmentEnterConfigBinding;
+import org.pniei.portal.databinding.FragmentEnterConfigBinding;
 import org.pniei.moduleskzi.utils.CryptUtils;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 import org.pniei.moduleskzi.utils.Utils;
 import org.pniei.portal.vpn.VpnClient;
-
 import java.io.File;
 import java.io.FileOutputStream;
-
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.documentfile.provider.DocumentFile;

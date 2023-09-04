@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.utils.Logger;
 
 public class LoggerFragment extends Fragment {

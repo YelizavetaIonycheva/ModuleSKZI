@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.notification.SpoNotificationsManager;
 import org.pniei.moduleskzi.utils.Logger;
 import org.pniei.moduleskzi.liveData.ManagerLiveData;

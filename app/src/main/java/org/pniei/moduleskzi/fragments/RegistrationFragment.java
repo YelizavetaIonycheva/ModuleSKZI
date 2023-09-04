@@ -16,17 +16,15 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import org.pniei.dwface.biometry.BiometryActivity;
 import org.pniei.dwface.biometry.BiometryPrefs;
 import org.pniei.dwface.biometry.BiometryUtils;
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.activities.LoginActivity;
-import org.pniei.moduleskzi.databinding.FragmentRegistrationBinding;
+import org.pniei.portal.databinding.FragmentRegistrationBinding;
 import org.pniei.moduleskzi.utils.CryptUtils;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 

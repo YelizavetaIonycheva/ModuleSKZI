@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.pniei.moduleskzi">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="false"
@@ -15,9 +15,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ModuleSKZI"
-        tools:targetApi="31">
-        <activity android:name=".activities.LauncherActivity"
+        android:theme="@style/Theme.ModuleSKZI">
+        <activity android:name="org.pniei.moduleskzi.activities.LauncherActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
@@ -26,19 +25,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.RegLicenseActivity"
+            android:name="org.pniei.moduleskzi.activities.RegLicenseActivity"
             android:screenOrientation="portrait"
             android:exported="true">
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name="org.pniei.moduleskzi.activities.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true">
         </activity>
-        <activity android:name=".activities.SecondaryActivity"
+        <activity android:name="org.pniei.moduleskzi.activities.SecondaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
-        <activity android:name=".activities.LoginActivity"
+        <activity android:name="org.pniei.moduleskzi.activities.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
@@ -46,7 +45,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
-        <activity android:name=".qrcode.QRCodeScanActivity"
+        <activity android:name="org.pniei.moduleskzi.qrcode.QRCodeScanActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible">
         </activity>
@@ -61,6 +60,15 @@
             </intent-filter>
         </service>
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
     <queries>

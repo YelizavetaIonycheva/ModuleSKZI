@@ -3,7 +3,7 @@ package org.pniei.moduleskzi.liveData;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 
 public class ManagerLiveData {
     private static ManagerLiveData instance;

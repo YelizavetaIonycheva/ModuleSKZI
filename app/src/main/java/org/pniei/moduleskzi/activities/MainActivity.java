@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
-import org.pniei.moduleskzi.R;
-import org.pniei.moduleskzi.databinding.ActivityMainBinding;
+import org.pniei.portal.R;
+import org.pniei.portal.databinding.ActivityMainBinding;
 import org.pniei.moduleskzi.liveData.ManagerLiveData;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 import org.pniei.portal.services.MonitoringService;
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.textVpnStatus.setText(vpnInfo.getIdStrStatus());
         mBinding.textVpnInSpeed.setText(String.format("%.0f", vpnInfo.getSpeedIN()));
         mBinding.textVpnOutSpeed.setText(String.format("%.0f", vpnInfo.getSpeedOUT()));
+       // mBinding.textVpnLanIp.setText(vpnInfo.getLanIP());
     }
 
     private void updateVpnQualityIcon(int quality) {

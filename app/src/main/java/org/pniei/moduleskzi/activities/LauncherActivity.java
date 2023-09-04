@@ -7,7 +7,7 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.pniei.dwface.biometry.DWFace;
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.utils.Logger;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 

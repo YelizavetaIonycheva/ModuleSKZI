@@ -370,5 +370,30 @@ public class FileUtils {
         return "com.google.android.apps.docs.storage".equals(uri.getAuthority()) || "com.google.android.apps.docs.storage.legacy".equals(uri.getAuthority());
     }
 
+    public static String getUriPath(Context context, Uri uri) {
+        String path = null;
+        String strUri = uri.toString();
+
+        if (strUri.startsWith("file://")) {
+            return strUri.substring(7);
+        }
+
+        try {
+            Uri docUriTree = DocumentsContract.buildDocumentUriUsingTree(uri, DocumentsContract.getTreeDocumentId(uri));
+            if (docUriTree != null) {
+                Cursor cursor = context.getContentResolver().query(docUriTree, null, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    path = cursor.getString(0);
+                    path = path.substring(path.lastIndexOf(":") + 1);
+                    cursor.close();
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
+        return path;
+    }
 
 }

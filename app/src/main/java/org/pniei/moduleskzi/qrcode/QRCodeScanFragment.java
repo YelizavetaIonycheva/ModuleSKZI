@@ -45,10 +45,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 
 public class QRCodeScanFragment extends Fragment implements  ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "QRCodeScaneFragment";
@@ -97,26 +98,16 @@ public class QRCodeScanFragment extends Fragment implements  ActivityCompat.OnRe
                 Task<List<Barcode>> scanResult = scanner.process(inputImage)
                         .addOnSuccessListener(barcodes -> {
                             for (Barcode barcode: barcodes) {
-                                String rawValue = barcode.getRawValue();
-                                if (rawValue == null) {
-                                    String displayValue = barcode.getDisplayValue();
-                                    if (displayValue.length() < 56) {
-                                        /*ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, buffer);
-                                        File imagesDir = new File(getContext().getApplicationInfo().dataDir);
-                                        try (FileOutputStream out = new FileOutputStream(imagesDir.getAbsolutePath() + "/image_" + count + ".png")) {
-                                            out.write(buffer.toByteArray());
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        count++;*/
-                                        continue;
-                                    }
-                                    displayValue = displayValue.substring(0, 56);
-                                    ((QRCodeScanActivity) getActivity()).returnData(displayValue);
-                                } else {
-                                    ((QRCodeScanActivity) getActivity()).returnData(rawValue);
+                                byte [] rawBytes = barcode.getRawBytes();
+                                if (rawBytes == null)
+                                    continue;
+                                if (rawBytes.length == 0)
+                                    continue;
+                                String rawValue = new String(rawBytes);
+                                if (rawValue.length() > 56) {
+                                    rawValue = rawValue.substring(0, 56);
                                 }
+                                ((QRCodeScanActivity) requireActivity()).returnData(rawValue);
                                 return;
                             }
                             image.close();

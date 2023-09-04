@@ -12,7 +12,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import org.pniei.dwface.biometry.BiometryPrefs;
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 
 import java.io.File;
 

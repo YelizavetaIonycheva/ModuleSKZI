@@ -1,10 +1,6 @@
 <resources>
-    <string name="app_name">ImpulseVS</string>
-
-
-
-
-    <string name="app_label">Импульс ВС</string>
+    <string name="app_name">Импульс-VS</string>
+    <string name="app_label">Импульс-VS</string>
     <string name="company_label">АО \"ПНИЭИ\"</string>
     <string name="check_license">Проверка лицензии</string>
     <string name="license_number">Код лицензии</string>

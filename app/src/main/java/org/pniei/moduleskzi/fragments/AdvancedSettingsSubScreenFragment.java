@@ -6,11 +6,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
-
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.utils.Utils;
 import org.pniei.portal.vpn.VpnClient;
-
 import java.util.ArrayList;
 
 public class AdvancedSettingsSubScreenFragment extends PreferenceFragmentCompat {

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.utils.Logger;
 import org.pniei.moduleskzi.liveData.ManagerLiveData;
 import org.pniei.moduleskzi.utils.PrefsUtils;

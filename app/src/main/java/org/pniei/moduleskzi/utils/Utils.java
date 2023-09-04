@@ -11,7 +11,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

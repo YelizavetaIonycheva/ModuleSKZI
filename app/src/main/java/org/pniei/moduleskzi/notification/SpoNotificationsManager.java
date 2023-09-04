@@ -11,11 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
-
-import org.pniei.moduleskzi.R;
 import org.pniei.moduleskzi.activities.MainActivity;
+import org.pniei.portal.R;
 import java.util.ArrayList;
 
 public class SpoNotificationsManager {
@@ -43,10 +41,8 @@ public class SpoNotificationsManager {
         Intent notifIntent = new Intent(context, MainActivity.class);
         notifIntent.putExtra("Notification", true);
         notifIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        //notifIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent mNotifContentIntent;
-        //mNotifContentIntent = PendingIntent.getBroadcast(context, 0, notifIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             mNotifContentIntent = PendingIntent.getActivity(context, 0, notifIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         } else {

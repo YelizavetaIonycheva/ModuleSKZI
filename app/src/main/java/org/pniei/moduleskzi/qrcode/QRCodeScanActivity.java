@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 
 public class QRCodeScanActivity extends AppCompatActivity {
     public static final String TAG = "QRCodeScaneActivity";

@@ -41,7 +41,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.pniei.dwface.biometry.BiometryActivity;
 import org.pniei.dwface.biometry.BiometryPrefs;
 import org.pniei.dwface.biometry.BiometryUtils;
-import org.pniei.moduleskzi.R;
+import org.pniei.portal.R;
 import org.pniei.moduleskzi.activities.SecondaryActivity;
 import org.pniei.moduleskzi.liveData.ManagerLiveData;
 import org.pniei.moduleskzi.utils.CryptUtils;
@@ -64,6 +64,8 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
     private ActivityResultLauncher<Intent> biometryResultLauncher;
     private ActivityResultLauncher<Intent> selectDirResultLauncher;
     private ActivityResultLauncher<Intent> selectFileResultLauncher;
+
+    private ActivityResultLauncher<String> requestPermissionWrite;
     private static Context mContext;
     private DocumentFile pickedDir = null;
     private DocumentFile pickedFile = null;
@@ -93,6 +95,7 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
             registerForSelectDirResult();
             registerForSelectFileResult();
             initBiometrySettings();
+            registerForRequestPermission();
         } else if(rootKey.equals(getString(R.string.pref_advanced_key))) {
             registerForSelectDirResult();
             registerForSelectFileResult();
@@ -467,8 +470,15 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
                         .show();
                 ImageButton button = alertDialog.findViewById(R.id.btnSelectKeyDir);
                 button.setOnClickListener(view -> {
-                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                    selectDirResultLauncher.launch(intent);
+                    if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ) {
+                            // Можно отобразить для чего нужно разрешение
+                        }
+                        requestPermissionWrite.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                        selectDirResultLauncher.launch(intent);
+                    }
                 });
                 selectedDir = alertDialog.findViewById(R.id.nameDir);
                 return true;
@@ -486,6 +496,7 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
                             ArrayList<byte[]> dataArray = new ArrayList<>();
                             dataArray.add(PrefsUtils.ins().getHashPass());
                             byte [] data = BiometryUtils.dataGeneration(dataArray);
+                            BiometryUtils.createDirs(mContext);
                             BiometryPrefs.ins().setKeyDecryptImage(PrefsUtils.ins().getHashPass());
                             BiometryPrefs.ins().setKeyEncryptImage(PrefsUtils.ins().getHashPass());
                             Intent newIntent = new Intent(mContext, BiometryActivity.class);
@@ -618,10 +629,10 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent resultData = result.getData();
                         Uri treeUri = resultData.getData();
-                        pickedDir = DocumentFile.fromTreeUri(getContext(), treeUri);
-                        mContext.getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        pickedDir = DocumentFile.fromTreeUri(mContext, treeUri);
+                        mContext.getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-                        String dir = FileUtils.getPath(mContext, treeUri);
+                        String dir = FileUtils.getUriPath(mContext, treeUri);
                         if (selectedDir != null)
                             selectedDir.setText(dir == null ? "" : ("/" + dir));
                     }
@@ -641,6 +652,17 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
                 });
     }
 
+    public void registerForRequestPermission() {
+        requestPermissionWrite = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                    selectDirResultLauncher.launch(intent);
+                }
+        );
+
+    }
+
 
 
 
@@ -649,5 +671,6 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
         ManagerLiveData.ins().getSkziTimeError().removeObservers(getViewLifecycleOwner());
         super.onDestroyView();
     }
+
 
 }
