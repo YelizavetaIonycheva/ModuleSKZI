@@ -229,12 +229,7 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
 
     private void setAdvancedPreferencesListener() {
         findPreference(getString(R.string.pref_export_logs_key)).setOnPreferenceClickListener(preference -> {
-            if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-            }
-            else {
-                ((SecondaryActivity)getActivity()).displayFragment(LoggerFragment.newInstance(), true);
-            }
+            ((SecondaryActivity)getActivity()).displayFragment(LoggerFragment.newInstance(), true);
             return false;
         });
 

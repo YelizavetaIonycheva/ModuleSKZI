@@ -174,8 +174,13 @@ public class VpnConnection implements Runnable {
                         checkQuality(end - start);
                         try { Thread.sleep(5000); } catch (InterruptedException ignored) { }
                     } else {
-                        checkQuality(0xFFFFFF);
-                        try { Thread.sleep(1000); } catch (InterruptedException ignored) { }
+                        if (isWork) {
+                            checkQuality(0xFFFFFF);
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException ignored) {
+                            }
+                        }
                     }
                 } else {
                     try { Thread.sleep(5000); } catch (InterruptedException ignored) { }
@@ -552,19 +557,21 @@ public class VpnConnection implements Runnable {
                 meanTimeDelay += value;
 
             meanTimeDelay /= buf_time_delay.length;
-
-            if(meanTimeDelay <= 150) {
-                ManagerLiveData.ins().setVpnQuality(ManagerLiveData.VpnQuality.QUALITY_HIGH);
-                idStringQuality =  R.string.connection_quality_high;
-            } else if (meanTimeDelay <= 400) {
-                ManagerLiveData.ins().setVpnQuality(ManagerLiveData.VpnQuality.QUALITY_MIDL);
-                idStringQuality =  R.string.connection_quality_middle;
-            } else {
-                ManagerLiveData.ins().setVpnQuality(ManagerLiveData.VpnQuality.QUALITY_LOW);
-                idStringQuality =  R.string.connection_quality_low;
+            if (!isWork) {
+                if (meanTimeDelay <= 150) {
+                    ManagerLiveData.ins().setVpnQuality(ManagerLiveData.VpnQuality.QUALITY_HIGH);
+                    idStringQuality = R.string.connection_quality_high;
+                } else if (meanTimeDelay <= 400) {
+                    ManagerLiveData.ins().setVpnQuality(ManagerLiveData.VpnQuality.QUALITY_MIDL);
+                    idStringQuality = R.string.connection_quality_middle;
+                } else {
+                    ManagerLiveData.ins().setVpnQuality(ManagerLiveData.VpnQuality.QUALITY_LOW);
+                    idStringQuality = R.string.connection_quality_low;
+                }
+                ManagerLiveData.ins().setVpnInfoQuality(idStringQuality);
             }
 
-            ManagerLiveData.ins().setVpnInfoQuality(idStringQuality);
+
         }).start();
     }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <style name="fontLabel" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:textSize">22sp</item>
@@ -26,12 +25,23 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="button_style" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+    <style name="button_style" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="backgroundTint">@android:color/white</item>
         <item name="strokeColor">?attr/colorSecondary</item>
         <item name="iconTint">?attr/colorSecondary</item>
     </style>
+
+
+    <style name="status_text_view" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 
 </resources>
