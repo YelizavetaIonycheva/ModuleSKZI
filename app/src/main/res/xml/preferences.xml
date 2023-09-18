@@ -149,6 +149,7 @@
 
 		<PreferenceScreen
 		    android:title="@string/pref_advanced_title"
+			android:icon="@drawable/ic_more"
 		    android:key="@string/pref_advanced_key">
 
 		    <PreferenceCategory

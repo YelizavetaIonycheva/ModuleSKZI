@@ -25,6 +25,11 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="TextSettingsTitle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="button_style" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/textColorPrimary</item>
@@ -42,6 +47,5 @@
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
     </style>
-
-
+    
 </resources>

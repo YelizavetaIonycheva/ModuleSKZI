@@ -21,6 +21,8 @@ import static org.pniei.moduleskzi.liveData.ManagerLiveData.VpnQuality.*;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
+    private String insructionOn = "нажмите, чтобы отключиться";
+    private String insructionOff = "нажмите, чтобы подключиться";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +33,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (VpnClient.ins().isWork()) {
             mBinding.btnStartVpn.setImageResource(R.drawable.ic_on);
+            mBinding.textInstruct.setText(insructionOn);
+            mBinding.vpnStatusLayout.setVisibility(View.VISIBLE);
+            mBinding.vpnQualityStroke.setVisibility(View.VISIBLE);
         } else {
             mBinding.btnStartVpn.setImageResource(R.drawable.ic_off);
+            mBinding.textInstruct.setText(insructionOff);
+            mBinding.vpnStatusLayout.setVisibility(View.INVISIBLE);
+            mBinding.vpnQualityStroke.setVisibility(View.INVISIBLE);
         }
 
         mBinding.btnStartVpn.setOnClickListener(v -> {
             if (VpnClient.ins().isWork()) {
-                mBinding.btnStartVpn.setImageResource(R.drawable.ic_on);
+                mBinding.btnStartVpn.setImageResource(R.drawable.ic_off);
+                mBinding.textInstruct.setText(insructionOff);
+                //mBinding.vpnStatusLayout.setVisibility(View.INVISIBLE);
                 VpnClient.stopVpnService(this);
                 MonitoringService.stopMonitoringService(this);
                 PrefsUtils.ins().setEnableVpn(false);
@@ -47,7 +57,10 @@ public class MainActivity extends AppCompatActivity {
                         // Toast с сообщением о некорректных IP адресах
                         Toast.makeText(this, R.string.bad_ip_skzi_address, Toast.LENGTH_SHORT).show();
                     } else {
-                        mBinding.btnStartVpn.setImageResource(R.drawable.ic_off);
+                        mBinding.btnStartVpn.setImageResource(R.drawable.ic_on);
+                        mBinding.textInstruct.setText(insructionOn);
+                        mBinding.vpnStatusLayout.setVisibility(View.VISIBLE);
+                        mBinding.vpnQualityStroke.setVisibility(View.VISIBLE);
                         MonitoringService.startMonitoringService(this);
                         PrefsUtils.ins().setEnableVpn(true);
                     }
@@ -136,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.bad_ip_skzi_address, Toast.LENGTH_SHORT).show();
             } else {
                 mBinding.btnStartVpn.setImageResource(R.drawable.ic_off);
+                mBinding.textInstruct.setText(insructionOff);
                 MonitoringService.startMonitoringService(this);
                 PrefsUtils.ins().setEnableVpn(true);
             }
@@ -170,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                            if (VpnClient.ins().isWork()) {
                                VpnClient.stopVpnService(MainActivity.this);
                                mBinding.btnStartVpn.setImageResource(R.drawable.ic_on);
+                               mBinding.textInstruct.setText(insructionOn);
                            }
                        }
                 }
