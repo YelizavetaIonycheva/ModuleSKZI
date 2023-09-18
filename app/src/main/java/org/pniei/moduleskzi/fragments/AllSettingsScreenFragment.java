@@ -232,7 +232,11 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
             ((SecondaryActivity)getActivity()).displayFragment(LoggerFragment.newInstance(), true);
             return false;
         });
-
+        findPreference(getString(R.string.pref_theme)).setOnPreferenceClickListener(preference -> {
+            mContext.setTheme(R.style.Theme_ModuleSKZIDark);
+            //setContentView(AllSettingsScreenFragment);
+            return false;
+        });
 
         findPreference(getString(R.string.pref_background_work_key)).setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent();

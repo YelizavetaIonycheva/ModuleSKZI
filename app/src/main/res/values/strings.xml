@@ -136,6 +136,7 @@
     <string name="pref_advanced_title">Дополнительно</string>
     <string name="pref_export_logs_title">Просмотр журнала работы с СКЗИ</string>
     <string name="pref_background_work_title">Контроль фоновой активности</string>
+    <string name="pref_theme">Смена темы</string>
 
     <string name="pref_export_logs_key">pref_export_logs_key</string>
     <string name="pref_update_po_key">pref_update_po_key</string>

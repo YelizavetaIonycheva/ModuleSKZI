@@ -63,16 +63,25 @@
                 tools:text="1000" />
 
             <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textVpnOutSpeed"
+                tools:layout_editor_absoluteY="82dp" />
+
+            <TextView
                 android:id="@+id/imageUpload"
                 style="@style/status_text_view"
                 android:layout_width="250dp"
                 android:layout_height="45dp"
                 android:text="скорость передачи данных:"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textVpnOutSpeed"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageDownload" />
+                tools:layout_editor_absoluteY="82dp" />
 
             <TextView
                 android:id="@+id/textVpnOutSpeed"
@@ -80,11 +89,10 @@
                 android:layout_height="45dp"
                 android:gravity="center"
                 android:textSize="26sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageUpload"
-                app:layout_constraintTop_toBottomOf="@+id/textVpnInSpeed"
+                tools:layout_editor_absoluteY="82dp"
                 tools:text="1000" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

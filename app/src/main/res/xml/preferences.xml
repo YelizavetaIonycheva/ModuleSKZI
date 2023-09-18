@@ -167,6 +167,12 @@
 					android:persistent="false"
 					android:icon="@drawable/ic_battery"/>
 
+				<SwitchPreferenceCompat
+					android:title="Смена темы"
+					android:key="@string/pref_theme"
+					android:persistent="false"
+					android:icon="@drawable/ic_theme"/>
+
 			</PreferenceCategory>
 
 		</PreferenceScreen>

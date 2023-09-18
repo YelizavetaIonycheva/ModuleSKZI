@@ -47,5 +47,14 @@
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
     </style>
-    
+
+    <style name="status_text_view_small" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>
