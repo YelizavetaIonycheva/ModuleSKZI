@@ -9,7 +9,7 @@ android {
             storePassword '12345678'
             keyAlias 'key0'
             keyPassword '12345678'
-            storeFile file('D:\\Ruchkin\\keys\\key.jks')
+            storeFile file('D:\\Khanbekova\\keys\\key.jks')
         }
     }
 

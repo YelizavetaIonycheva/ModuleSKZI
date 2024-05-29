@@ -12,6 +12,7 @@
     <string name="select_config_info">Введите конфигурационные данные</string>
     <string name="config_file">Файл конфигурации</string>
     <string name="enter">Ввод</string>
+    <string name="change_pass">Изменить пароль</string>
     <string name="next">Далее</string>
     <string name="prefs_set">Инициализация</string>
     <string name="prefs_set_info">Выберите файл конфигурации</string>
@@ -174,5 +175,10 @@
     <string name="pref_key_n_date_end_key">pref_key_n_date_end_key</string>
     <string name="pref_slzi_capture_all_apps">Захват всего трафика</string>
     <string name="pref_skzi_capture_all_apps_key">pref_skzi_capture_all_apps_key</string>
+    <string name="pref_change_pass_key">pref_change_pass_key</string>
     <string name="about_app">О приложении</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="old_password">Текущий пароль</string>
+    <string name="pref_change_pass_title">Смена пароля</string>
+    <string name="change_pass_info">Смена пароля</string>
 </resources>

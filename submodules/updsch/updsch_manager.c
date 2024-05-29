@@ -5,7 +5,7 @@
 #include "updsch_manager.h"
 #include "Hesh341112.h"
 
-static updsch_struct updsch = {
+static const updsch_struct updsch = {
 	//ключ ДСЧ без маски
 	{0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 	 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01},
@@ -25,7 +25,6 @@ static updsch_struct updsch = {
 	//серийный номер аппаратуры изготовления ключей
 	{0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04},
 #else
-
 	//серийный номер изделия
 	{0x49, 0x4D, 0x50, 0x56, 0x53, 0x5f, 0x76, 0x31, 0x30, 0x30},
 	//{0x49, 0x4D, 0x50, 0x4C, 0x53, 0x5F, 0x76, 0x31, 0x30, 0x30},			//IMPLS_v100
@@ -41,6 +40,8 @@ static updsch_struct updsch = {
 	{0x1f, 0x2b, 0xc4, 0x0a, 0x30, 0x43, 0xe5, 0x55, 0x4f, 0xa2, 0x0a, 0x4f, 0x0a, 0x7f, 0xd8, 0xa5,
 	 0x5f, 0x18, 0xc9, 0x7c, 0xc9, 0x88, 0x4d, 0x3a, 0xe0, 0x3c, 0xbe, 0xad, 0x5d, 0x63, 0xff, 0xb4}
 };
+
+static updsch_struct updsch_w;
 
 static int counter_updsch = 0;
 static unsigned char m[8];
@@ -61,19 +62,20 @@ unsigned char init_updsch(unsigned char * key_dsch, unsigned char * key, unsigne
 	HeshData.STATE    = TR_NO;
 
 	Hesh341112(HESH_LEN_256, &HeshData);
+	memcpy((char *)&updsch_w, (char *)&updsch, sizeof(updsch_struct));
 	for(int i = 0, j = 0; i < 64; i++)
 	{
-		updsch.r[i] ^= hash[j++];
+		updsch_w.r[i] = updsch.r[i] ^ hash[j++];
 		if(j == 32)
 			j = 0;
 	}
 	for(int i = 0, j = 0; i < 32; i++, j++){
-		updsch.k[i] ^= hash[j];
+		updsch_w.k[i] = updsch.k[i] ^ hash[j];
 	}
 
-	memcpy(updsch.k_dsch, key_dsch, 32);
-	memcpy(updsch.k_ij, key, 32);
-	memcpy(updsch.tz, table, 64);
+	memcpy(updsch_w.k_dsch, key_dsch, 32);
+	memcpy(updsch_w.k_ij, key, 32);
+	memcpy(updsch_w.tz, table, 64);
 
 #if LOGGING_UPDSCH
 	//### Снять Кдсч
@@ -95,7 +97,7 @@ unsigned char init_updsch(unsigned char * key_dsch, unsigned char * key, unsigne
 	}
 #endif
 	//Инициализация УПДСЧ
-	updsch_init(&updsch, SecureIdentifyInf);
+	updsch_init(&updsch_w, SecureIdentifyInf);
 
 	return 0;
 }

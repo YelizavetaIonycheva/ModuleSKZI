@@ -13,6 +13,7 @@ public class PrefsUtils {
     private boolean isPrefsSet;
     private boolean isAuth = false;
     private String mHashPass;           // Хэш на пароль пользователя
+    private String mHashLoginPass;      // Хэш на пароль пользователя для авторизации
     private String mIpDns;              // IP-адрес DNS в режиме Портал
     private String mIpDnsSecond;        // IP-адрес DNS дополнительный в режиме Портал
     private String mIpSkzi;             // IP-адрес СКЗИ
@@ -35,6 +36,7 @@ public class PrefsUtils {
         String VPN_APP_LIST =       "vpn_app_list";
         String VPN_ENABLE =         "vpn_enable";
         String VPN_CAPTURE_ALL =    "vpn_capture_all";
+        String HASH_LOGIN_PASS =    "hash_login_pass";
     }
     SharedPreferences prefs = null;
 
@@ -70,6 +72,13 @@ public class PrefsUtils {
     public void setHashPass(byte[] hashPass) {
         mHashPass = Utils.byteArrayToHexString(hashPass);
         prefs.edit().putString(Prefs.HASH_PASS, mHashPass).apply();
+    }
+    public byte[] getHashLoginPass() {
+        return Utils.hexStringToByteArray(mHashLoginPass);
+    }
+    public void setHashLoginPass(byte[] hashLoginPass){
+        mHashLoginPass = Utils.byteArrayToHexString(hashLoginPass);
+        prefs.edit().putString(Prefs.HASH_LOGIN_PASS, mHashLoginPass).apply();
     }
 
     public boolean isLicenseReg() {
@@ -179,6 +188,7 @@ public class PrefsUtils {
         isPrefsSet = prefs.getBoolean(Prefs.IS_PREFS_SET, false);
 
         mHashPass           = prefs.getString(Prefs.HASH_PASS, null);
+        mHashLoginPass      = prefs.getString(Prefs.HASH_LOGIN_PASS, null);
         isAppBackground     = false;
         mIpDns               = prefs.getString(Prefs.IP_DNS, "");
         mIpDnsSecond        = prefs.getString(Prefs.IP_DNS_SECOND, "");

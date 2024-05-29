@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.google.android.material.textfield.TextInputLayout;
+
 import org.pniei.dwface.biometry.BiometryActivity;
 import org.pniei.dwface.biometry.BiometryPrefs;
 import org.pniei.dwface.biometry.BiometryUtils;
@@ -24,7 +26,9 @@ import org.pniei.moduleskzi.utils.CryptUtils;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 import org.pniei.moduleskzi.utils.Utils;
 import org.pniei.portal.vpn.VpnClient;
+
 import java.util.ArrayList;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
@@ -53,10 +57,18 @@ public class AuthenticationFragment extends Fragment {
         });
 
         mBinding.password.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
-            public void afterTextChanged(Editable editable) { mBinding.passwordLayout.setError(null);}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mBinding.passwordLayout.setError(null);
+            }
         });
 
         mBinding.password.setOnKeyListener((v, i, keyEvent) -> {
@@ -104,13 +116,13 @@ public class AuthenticationFragment extends Fragment {
         mBinding.progressPar.setVisibility(View.VISIBLE);
 
         new Thread(() -> {
-            if (!(passHash.equals(Utils.byteArrayToHexString(PrefsUtils.ins().getHashPass())))) {
+            if (!(passHash.equals(Utils.byteArrayToHexString(PrefsUtils.ins().getHashLoginPass())))) {
                 showError(getString(R.string.pass_error), mBinding.passwordLayout);
                 return;
             }
 
             if (PrefsUtils.ins().isPrefsSet()) {
-                if(!decryptKeyFile()) {
+                if (!decryptKeyFile()) {
                     showError(getString(R.string.pass_error), mBinding.passwordLayout);
                 } else {
                     ((LoginActivity) requireActivity()).loginOk();
@@ -126,9 +138,9 @@ public class AuthenticationFragment extends Fragment {
     }
 
     private void showError(final String error, View view) {
-        mHandler.post(() ->  {
+        mHandler.post(() -> {
             if (view instanceof TextInputLayout) {
-                ((TextInputLayout)view).setError(error);
+                ((TextInputLayout) view).setError(error);
             }
             mBinding.password.setEnabled(true);
             mBinding.btnEnter.setEnabled(true);
@@ -153,8 +165,8 @@ public class AuthenticationFragment extends Fragment {
                         if (resultData != null) {
                             int res = resultData.getIntExtra(BiometryActivity.RESULT, BiometryActivity.ERROR);
                             if (res == BiometryActivity.AUT_OK) {
-                                byte [] biometryData = resultData.getByteArrayExtra(BiometryActivity.DATA+"0");
-                                ArrayList<byte []> dataArray = BiometryUtils.dataHandling(biometryData);
+                                byte[] biometryData = resultData.getByteArrayExtra(BiometryActivity.DATA + "0");
+                                ArrayList<byte[]> dataArray = BiometryUtils.dataHandling(biometryData);
                                 mBinding.password.setEnabled(false);
                                 mBinding.btnEnter.setEnabled(false);
                                 mBinding.progressPar.setVisibility(View.VISIBLE);

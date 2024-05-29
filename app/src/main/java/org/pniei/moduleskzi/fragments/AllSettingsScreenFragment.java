@@ -58,6 +58,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.pniei.portal.fragments.ChangePassFragment;
 
 public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
     private PreferenceScreen mPreferenceScreen;
@@ -232,9 +233,8 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
             ((SecondaryActivity)getActivity()).displayFragment(LoggerFragment.newInstance(), true);
             return false;
         });
-        findPreference(getString(R.string.pref_theme)).setOnPreferenceClickListener(preference -> {
-            mContext.setTheme(R.style.Theme_ModuleSKZIDark);
-            //setContentView(AllSettingsScreenFragment);
+        findPreference(getString(R.string.pref_change_pass_key)).setOnPreferenceClickListener(preference -> {
+            ((SecondaryActivity) getActivity()).displayFragment(ChangePassFragment.newInstance(mContext), true);
             return false;
         });
 

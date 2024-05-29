@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -52,9 +53,12 @@
         </activity>
 
 
-        <service android:name="org.pniei.portal.services.MonitoringService"/>
+        <service android:name="org.pniei.portal.services.MonitoringService"
+            android:foregroundServiceType="dataSync"
+            />
         <service android:name="org.pniei.portal.vpn.VpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
+            android:foregroundServiceType="dataSync"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.net.VpnService"/>

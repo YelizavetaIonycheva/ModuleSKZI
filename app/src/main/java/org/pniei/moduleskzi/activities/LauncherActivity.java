@@ -35,7 +35,7 @@ public class LauncherActivity extends AppCompatActivity {
             }
 
             PrefsUtils.ins().load(this);
-            DWFace.Init(getApplicationContext());
+            //DWFace.Init(getApplicationContext());
             Logger.inc().init(this);
 
             if (!PrefsUtils.ins().isLicenseReg()) {

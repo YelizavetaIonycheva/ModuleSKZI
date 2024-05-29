@@ -47,52 +47,44 @@
                 app:layout_constraintEnd_toStartOf="@+id/textVpnInSpeed"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.422" />
 
             <TextView
                 android:id="@+id/textVpnInSpeed"
                 android:layout_width="77dp"
                 android:layout_height="45dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="28dp"
                 android:gravity="center"
                 android:textSize="26sp"
                 app:layout_constraintBottom_toTopOf="@+id/textVpnOutSpeed"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageDownload"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
                 tools:text="1000" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:text="TextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textVpnOutSpeed"
-                tools:layout_editor_absoluteY="82dp" />
 
             <TextView
                 android:id="@+id/imageUpload"
                 style="@style/status_text_view"
                 android:layout_width="250dp"
                 android:layout_height="45dp"
+                android:layout_marginBottom="16dp"
                 android:text="скорость передачи данных:"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textVpnOutSpeed"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="82dp" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textVpnOutSpeed"
                 android:layout_width="77dp"
                 android:layout_height="45dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="16dp"
                 android:gravity="center"
                 android:textSize="26sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageUpload"
-                tools:layout_editor_absoluteY="82dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="1000" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

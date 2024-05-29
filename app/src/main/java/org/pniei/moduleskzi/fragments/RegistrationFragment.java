@@ -114,6 +114,7 @@ public class RegistrationFragment extends Fragment {
             showBiometryDialog();
         } else {
             PrefsUtils.ins().setHashPass(CryptUtils.getHash(pas1.getBytes()));
+            PrefsUtils.ins().setHashLoginPass(CryptUtils.getHash(pas1.getBytes()));
             ((LoginActivity) requireActivity()).displayFragment(EnterConfigFragment.newInstance(mContext), false);
         }
     }
@@ -124,6 +125,7 @@ public class RegistrationFragment extends Fragment {
                 .setMessage(R.string.biometry_train_info)
                 .setNegativeButton(getString(R.string.no), (dialog, which) -> {
                     PrefsUtils.ins().setHashPass(CryptUtils.getHash(mPassTemp.getBytes()));
+                    PrefsUtils.ins().setHashLoginPass(CryptUtils.getHash(mPassTemp.getBytes()));
                     ((LoginActivity) requireActivity()).displayFragment(EnterConfigFragment.newInstance(mContext), false);
                 })
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
@@ -165,6 +167,7 @@ public class RegistrationFragment extends Fragment {
                                 byte [] nbcc = resultData.getByteArrayExtra(BiometryActivity.NBCC);
                                 if (nbcc != null) {
                                     PrefsUtils.ins().setHashPass(CryptUtils.getHash(mPassTemp.getBytes()));
+                                    PrefsUtils.ins().setHashLoginPass(CryptUtils.getHash(mPassTemp.getBytes()));
                                     BiometryUtils.saveNBCC(mContext, nbcc);
                                     BiometryPrefs.ins().setBiometryBind(true);
                                     ((LoginActivity) requireActivity()).displayFragment(EnterConfigFragment.newInstance(mContext), false);

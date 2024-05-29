@@ -3,6 +3,8 @@
 #include "updsch.h"
 #include "gostr3411_prf.h"
 #include "cypher.h"
+#include <unistd.h>
+
 
 //---------------------------------------------------------
 //Модуль эллиптической кривой
@@ -463,14 +465,14 @@ static void gen_SecureIdentifyInf(updsch_struct *updsch, unsigned char *SecureId
 	memcpy_big_endian(IdentifyInf + 32 + 64 + 8 + 64 + 10 + 10 + 4, (unsigned char *)T_init[0], 32);
 	memcpy_big_endian(IdentifyInf + 32 + 64 + 8 + 64 + 10 + 10 + 4 + 32, (unsigned char *)T_work[0], 32);
 
-#if LOGGING_UPDSCH
+//#if LOGGING_UPDSCH
     //### Снять значение IdentifyInf 256 байт
     LOGD("Значение IdentifyInf");
     for(int j = 0; j < 256; j++) {
     	usleep(100);
         LOGD("IdentifyInf[%i] = %02X", j, IdentifyInf[j]);
     }
-#endif	
+//#endif
 	
 	for(i = 0; i < 6; i++)
 	{
@@ -483,14 +485,14 @@ static void gen_SecureIdentifyInf(updsch_struct *updsch, unsigned char *SecureId
 	memcpy_big_endian(SecureIdentifyInf + i * 33, (unsigned char *)T_work[0], 32);
 	SecureIdentifyInf[32 + 33 * i] = 0x08;
 
-#if LOGGING_UPDSCH
+//#if LOGGING_UPDSCH
     //### Снять значение SecureIdentifyInf 264 байт
 	LOGD("Значение SecureIdentifyInf");
     for(int j = 0; j < 264; j++) {
         usleep(100);
         LOGD("SecureIdentifyInf[%i] = %02X", j, SecureIdentifyInf[j]);
     }
-#endif
+//#endif
 
 #ifdef _TESTING_	
 	if(memcmp(SecureIdentifyInf, sec_id_inf, sizeof(sec_id_inf)))
@@ -701,14 +703,14 @@ static unsigned char gen_SecureIdentifyInf_pp(unsigned char *key, unsigned char 
 	SecureIdentifyInf_pp[68] = 0x04;
 	memcpy(SecureIdentifyInf_pp + 69, (unsigned char *)T_init[0] + 22, 10);
 	SecureIdentifyInf_pp[79] = 0x05;
-#if LOGGING_UPDSCH
+//#if LOGGING_UPDSCH
 	//### Снять значение SecureIdentifyInf 264 байт
 	LOGD("Значение SecureIdentifyInf_pp");
 	for(int j = 0; j < 264; j++) {
 		usleep(100);
 		LOGD("SecureIdentifyInf_pp[%i] = %02X", j, SecureIdentifyInf_pp[j]);
 	}
-#endif
+//#endif
 	return 0;
 exit_err:
 	free_cfb(ctx);

@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public class RegLicenseActivity extends AppCompatActivity implements View.OnClickListener {
+public class  RegLicenseActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityResultLauncher<Intent> selectFileResultLauncher;
     private ActivityResultLauncher<Intent> qrcodeActivityResultLauncher;
     private ActivityRegLicenseBinding mBinding;
