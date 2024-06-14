@@ -21,6 +21,7 @@ jobject THIS;
 IKEv2_SA_PULL ikev2_sa_pull[] = {{NULL, 0, 0}, {NULL, 0, 0}};
 int index_main_ikev2_sa = -1;
 int index_new_ikev2_sa = -1;
+static int firstinit = 0;
 pthread_mutex_t ikev2_sa_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t ikev2_sa_mutex_processing_data = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t ikev2_sa_mutex_keepalive = PTHREAD_MUTEX_INITIALIZER;
@@ -125,8 +126,13 @@ int ikev2_sa_init(unsigned short net_number, unsigned short lan_port,
 	}
 
 	srand(random);
-	nonce_init();
-
+    if (nonce_test() != 0)
+        return IKE_ERR;
+	 if (firstinit == 0){
+         nonce_init();
+         firstinit = 1;
+     }
+    
 	ikev2_sa->blockNote = key_kompl;
 	ikev2_sa->lanPort = lan_port;
 	memcpy(ikev2_sa->lanIpAdr, lan_ip_addr, 4);

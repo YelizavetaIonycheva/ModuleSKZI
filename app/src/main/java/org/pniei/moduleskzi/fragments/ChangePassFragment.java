@@ -1,4 +1,4 @@
-package org.pniei.portal.fragments;
+package org.pniei.moduleskzi.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
