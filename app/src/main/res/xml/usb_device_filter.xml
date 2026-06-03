@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  res/xml/usb_device_filter.xml
+  Фильтр USB mass-storage устройств (SD-кардридеры через OTG).
+  class=8 (MASS_STORAGE), subclass=6 (SCSI), protocol=80 (bulk-only).
+-->
+<resources>
+    <usb-device class="8" subclass="6" protocol="80"/>
+</resources>
