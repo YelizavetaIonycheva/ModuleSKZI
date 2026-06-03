@@ -1,15 +1,20 @@
 package org.pniei.portal.vpn;
 
 import android.net.ConnectivityManager;
+import android.net.IpPrefix;
 import android.net.NetworkInfo;
 import android.net.VpnService;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -45,7 +50,7 @@ public class VpnConnection implements Runnable {
     private final int mSkziPort;
     private final short serverNetNumber = (short)0xF2D2;
     private boolean isConnect = false;
-    private boolean isWork = false;
+    private boolean isWork;
     private OnEstablishListener mOnEstablishListener;
     private ConnectivityManager mConManager;
     private DatagramChannel tunnel;
@@ -85,6 +90,7 @@ public class VpnConnection implements Runnable {
 
     public void stopConnection() {
          isWork = false;
+         VpnClient.setWork(false);
     }
 
     public class CheckTimeSaThread extends Thread {
@@ -207,6 +213,7 @@ public class VpnConnection implements Runnable {
                 try {
                     buffer = skziPackages.take();
                     vpnClient.vpnprocessingdata(buffer, buffer.length, dataOut, lengthOut, target, err);
+                    Log.d(getTag(), "vpnClient.vpnprocessingdata");
                     buffer = null;
                     switch(err[0]) {
                         case 0: {
@@ -306,6 +313,7 @@ public class VpnConnection implements Runnable {
         final SocketAddress serverAddress = new InetSocketAddress(mSkziAdress, mSkziPort);
         NetworkInfo networkInfo;
         isWork = true;
+        VpnClient.setWork(true);
         Log.i(getTag(), "Starting + " + serverAddress.toString());
         while(isWork && !Thread.currentThread().isInterrupted()) {
             try {
@@ -400,6 +408,7 @@ public class VpnConnection implements Runnable {
             if (!mService.protect(tunnel.socket())) {
                 throw new IllegalStateException("Cannot protect the tunnel");
             }
+
             tunnel.connect(server);
             tunnel.configureBlocking(false);
 
@@ -661,9 +670,13 @@ public class VpnConnection implements Runnable {
                                             Log.e(getTag(), "ERR = " + err[0]);
                                             break;
                                         }
+                                    } else {
+                                        Log.i(getTag(), "length ="+ length);
                                     }
                                 }
                             }
+                        } else {
+                            Log.i(getTag(), "err[0] ="+ err[0]);
                         }
                         break;
                     }
@@ -745,9 +758,13 @@ public class VpnConnection implements Runnable {
                                             Log.e(getTag(), "ERR = " + err[0]);
                                             break;
                                         }
+                                    } else {
+                                        Log.i(getTag(), "length2 ="+ length);
                                     }
                                 }
                             }
+                        }else {
+                            Log.i(getTag(), "err[0] ="+ err[0]);
                         }
                         break;
                     }
@@ -758,7 +775,7 @@ public class VpnConnection implements Runnable {
         return null;
     }
 
-    private ParcelFileDescriptor configure(String parameters, boolean isReserveKey) throws IllegalArgumentException {
+    private ParcelFileDescriptor configure(String parameters, boolean isReserveKey) throws IllegalArgumentException, UnknownHostException {
         StringBuilder sb = new StringBuilder();
         VpnService.Builder builder = mService.new Builder();
         for (String parameter : parameters.split(" ")) {
@@ -776,6 +793,10 @@ public class VpnConnection implements Runnable {
                         break;
                     case 'r':
                         builder.addRoute(fields[1], Integer.parseInt(fields[2]));
+                        /*builder.addRoute("172.16.10.230", 32);F
+                        builder.addRoute("172.16.10.1", 32);
+                        builder.addRoute("10.0.7.40", 32);*/
+
                         break;
                 }
             } catch (NumberFormatException e) {
@@ -814,7 +835,18 @@ public class VpnConnection implements Runnable {
             if (isReserveKey)
                 mOnEstablishListener.onEstablishOnReserveKey();
         }
+        // Исключаем 192.168.0.0/16 для доступа к IP-камере
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            byte[] ipv4Bytes = new byte[]{(byte) 192, (byte) 168, (byte) 101, (byte) 0};
+            IpPrefix ipecac = new IpPrefix( InetAddress.getByAddress(ipv4Bytes)    , 24);
+            try {
+                builder.excludeRoute(ipecac);
 
+                Log.d(getTag(), "Excluded network: " + ipecac);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }*/
         Logger.inc().write(getTag(), sb.toString());
         return vpnInterface;
     }

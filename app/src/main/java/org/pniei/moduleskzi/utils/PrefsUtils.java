@@ -2,48 +2,47 @@ package org.pniei.moduleskzi.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class PrefsUtils {
+
     private final String TAG = "PrefsUtils";
     private static PrefsUtils instance;
-    private boolean isLicenseReg;
     private boolean isPrefsSet;
     private boolean isAuth = false;
-    private String mHashPass;           // Хэш на пароль пользователя
-    private String mHashLoginPass;      // Хэш на пароль пользователя для авторизации
-    private String mIpDns;              // IP-адрес DNS в режиме Портал
-    private String mIpDnsSecond;        // IP-адрес DNS дополнительный в режиме Портал
-    private String mIpSkzi;             // IP-адрес СКЗИ
-    private String mIpMon;              // IP-адрес сервера мониторинга ключей
-    private boolean isAppBackground;    // Признак работы в фоне (Не сохраняется в файл)
-    private Set<String> app_vpn_list;   // Список браузеров работающих через VPN
-    private boolean isVpnEnable;        // Признак работы VPN в режиме Портал
-    private boolean isCaptureAll;       // Признак захвата всего трафика
+    private String mHashPass;
+    private String mHashLoginPass;
+    private String mIpDns;
+    private String mIpDnsSecond;
+    private String mIpSkzi;
+    private String mIpMon;
+    private boolean isAppBackground;
+    private Set<String> app_vpn_list;
+    private boolean isVpnEnable;
+    private boolean isCaptureAll;
     private boolean isNetworkAvailable;
 
     public interface Prefs {
-        String NAME =               "moduleskzi_settings";
-        String IS_LEC_REG =         "is_lec_reg";
-        String IS_PREFS_SET =       "is_prefs_set";
-        String HASH_PASS =          "hash_pass";
-        String IP_DNS =             "ip_dns";
-        String IP_DNS_SECOND =      "ip_dns_second";
-        String IP_SKZI =            "ip_skzi";
-        String IP_MON =             "ip_mon";
-        String VPN_APP_LIST =       "vpn_app_list";
-        String VPN_ENABLE =         "vpn_enable";
-        String VPN_CAPTURE_ALL =    "vpn_capture_all";
-        String HASH_LOGIN_PASS =    "hash_login_pass";
+        String NAME            = "moduleskzi_settings";
+        String IS_PREFS_SET    = "is_prefs_set";
+        String HASH_PASS       = "hash_pass";
+        String IP_DNS          = "ip_dns";
+        String IP_DNS_SECOND   = "ip_dns_second";
+        String IP_SKZI         = "ip_skzi";
+        String IP_MON          = "ip_mon";
+        String VPN_APP_LIST    = "vpn_app_list";
+        String VPN_ENABLE      = "vpn_enable";
+        String VPN_CAPTURE_ALL = "vpn_capture_all";
+        String HASH_LOGIN_PASS = "hash_login_pass";
     }
+
     SharedPreferences prefs = null;
 
     public interface JsonPrefs {
-        String IP_DNS =     "ip_dns";
-        String IP_SKZI =    "ip_skzi";
-        String IP_MON =     "ip_mon";
+        String IP_DNS  = "ip_dns";
+        String IP_SKZI = "ip_skzi";
+        String IP_MON  = "ip_mon";
     }
 
     private PrefsUtils() { }
@@ -73,21 +72,14 @@ public class PrefsUtils {
         mHashPass = Utils.byteArrayToHexString(hashPass);
         prefs.edit().putString(Prefs.HASH_PASS, mHashPass).apply();
     }
+
     public byte[] getHashLoginPass() {
         return Utils.hexStringToByteArray(mHashLoginPass);
     }
-    public void setHashLoginPass(byte[] hashLoginPass){
+
+    public void setHashLoginPass(byte[] hashLoginPass) {
         mHashLoginPass = Utils.byteArrayToHexString(hashLoginPass);
         prefs.edit().putString(Prefs.HASH_LOGIN_PASS, mHashLoginPass).apply();
-    }
-
-    public boolean isLicenseReg() {
-        return isLicenseReg;
-    }
-
-    public void setLicenseReg(boolean licenseReg) {
-        isLicenseReg = licenseReg;
-        prefs.edit().putBoolean(Prefs.IS_LEC_REG, isLicenseReg).apply();
     }
 
     public String getIpDns() {
@@ -182,30 +174,28 @@ public class PrefsUtils {
     }
 
     public void load(Context context) {
-        prefs = context.getApplicationContext().getSharedPreferences(Prefs.NAME, Context.MODE_PRIVATE);
-        //mServerAddress = prefs.getString(Prefs.SERVER_ADDRESS, "31.173.180.106:8080");
-        isLicenseReg = prefs.getBoolean(Prefs.IS_LEC_REG, false);
-        isPrefsSet = prefs.getBoolean(Prefs.IS_PREFS_SET, false);
-
-        mHashPass           = prefs.getString(Prefs.HASH_PASS, null);
-        mHashLoginPass      = prefs.getString(Prefs.HASH_LOGIN_PASS, null);
-        isAppBackground     = false;
-        mIpDns               = prefs.getString(Prefs.IP_DNS, "");
-        mIpDnsSecond        = prefs.getString(Prefs.IP_DNS_SECOND, "");
-        mIpSkzi             = prefs.getString(Prefs.IP_SKZI, "");
-        mIpMon              = prefs.getString(Prefs.IP_MON, "");
-        isVpnEnable         = prefs.getBoolean(Prefs.VPN_ENABLE, true);
-        isCaptureAll        = prefs.getBoolean(Prefs.VPN_CAPTURE_ALL, true);
-        app_vpn_list        = prefs.getStringSet(Prefs.VPN_APP_LIST, null);
+        prefs = context.getApplicationContext().getSharedPreferences(Prefs.NAME,
+                Context.MODE_PRIVATE);
+        isPrefsSet     = prefs.getBoolean(Prefs.IS_PREFS_SET, false);
+        mHashPass      = prefs.getString(Prefs.HASH_PASS, null);
+        mHashLoginPass = prefs.getString(Prefs.HASH_LOGIN_PASS, null);
+        isAppBackground = false;
+        mIpDns         = prefs.getString(Prefs.IP_DNS, "");
+        mIpDnsSecond   = prefs.getString(Prefs.IP_DNS_SECOND, "");
+        mIpSkzi        = prefs.getString(Prefs.IP_SKZI, "");
+        mIpMon         = prefs.getString(Prefs.IP_MON, "");
+        isVpnEnable    = prefs.getBoolean(Prefs.VPN_ENABLE, true);
+        isCaptureAll   = prefs.getBoolean(Prefs.VPN_CAPTURE_ALL, true);
+        app_vpn_list   = prefs.getStringSet(Prefs.VPN_APP_LIST, null);
         isNetworkAvailable = false;
         if (app_vpn_list != null)
-            app_vpn_list    = new HashSet<>(app_vpn_list);
+            app_vpn_list = new HashSet<>(app_vpn_list);
         else
-            app_vpn_list    = new HashSet <>();
+            app_vpn_list = new HashSet<>();
     }
 
     public void reset() {
-        if(prefs != null) {
+        if (prefs != null) {
             prefs.edit().clear().commit();
         }
     }

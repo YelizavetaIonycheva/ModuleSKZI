@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.pniei.dwface.biometry.DWFace;
 import org.pniei.portal.R;
 import org.pniei.moduleskzi.utils.Logger;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 
 public class LauncherActivity extends AppCompatActivity {
+
     private final String TAG = "LauncherActivity";
     private Handler mHandler;
 
@@ -27,37 +26,29 @@ public class LauncherActivity extends AppCompatActivity {
     private void initApp() {
         new Thread(() -> {
             if (PrefsUtils.ins().isAuth()) {
-                try { Thread.sleep(250); } catch (InterruptedException e) { e.printStackTrace(); }
+                try { Thread.sleep(250); } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Intent newIntent = new Intent(LauncherActivity.this, MainActivity.class);
                 startActivity(newIntent);
                 finish();
                 return;
             }
-
             PrefsUtils.ins().load(this);
             //DWFace.Init(getApplicationContext());
             Logger.inc().init(this);
-
-            if (!PrefsUtils.ins().isLicenseReg()) {
+            if (PrefsUtils.ins().isAuth()) {
                 mHandler.post(() -> {
-                    Intent newIntent = new Intent(LauncherActivity.this, RegLicenseActivity.class);
+                    Intent newIntent = new Intent(LauncherActivity.this, MainActivity.class);
                     startActivity(newIntent);
                     finish();
                 });
             } else {
-                if (PrefsUtils.ins().isAuth()) {
-                    mHandler.post(() -> {
-                        Intent newIntent = new Intent(LauncherActivity.this, MainActivity.class);
-                        startActivity(newIntent);
-                        finish();
-                    });
-                } else {
-                    mHandler.post(() -> {
-                        Intent newIntent = new Intent(LauncherActivity.this, LoginActivity.class);
-                        startActivity(newIntent);
-                        finish();
-                    });
-                }
+                mHandler.post(() -> {
+                    Intent newIntent = new Intent(LauncherActivity.this, LoginActivity.class);
+                    startActivity(newIntent);
+                    finish();
+                });
             }
         }).start();
     }

@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkRequest;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
@@ -32,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         if (VpnClient.ins().isWork()) {
+            Log.i("vpncheck", "work "  + VpnClient.ins());
             mBinding.btnStartVpn.setImageResource(R.drawable.ic_on);
             mBinding.textInstruct.setText(insructionOn);
             mBinding.vpnStatusLayout.setVisibility(View.VISIBLE);
             mBinding.vpnQualityStroke.setVisibility(View.VISIBLE);
         } else {
+            Log.i("vpncheck", "not work " + VpnClient.ins());
             mBinding.btnStartVpn.setImageResource(R.drawable.ic_off);
             mBinding.textInstruct.setText(insructionOff);
             mBinding.vpnStatusLayout.setVisibility(View.INVISIBLE);

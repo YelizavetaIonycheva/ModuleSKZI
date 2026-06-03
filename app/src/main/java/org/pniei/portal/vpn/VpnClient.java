@@ -58,7 +58,7 @@ public class VpnClient {
     private KeyInf workKey = null;
     private KeyInf connectingKey = null;
     private ArrayList<KeyInf> nextKeys = null;
-    private static boolean isWork = false;
+    private static boolean isWork;
     public static final int REQUST_VPN = 2354;
 
 
@@ -94,7 +94,7 @@ public class VpnClient {
         return isWork;
     }
 
-    public void setWork(boolean work) {
+    public static void setWork(boolean work) {
         isWork = work;
     }
 
