@@ -58,10 +58,6 @@ public class PrefsUtils {
         return isAuth;
     }
 
-    public void setAuth(boolean auth) {
-        isAuth = auth;
-    }
-
     public byte[] getHashPass() {
         if (mHashPass == null)
             return null;

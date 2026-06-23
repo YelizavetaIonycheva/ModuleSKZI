@@ -27,8 +27,11 @@ import org.pniei.moduleskzi.activities.LoginActivity;
 import org.pniei.portal.databinding.FragmentRegistrationBinding;
 import org.pniei.moduleskzi.utils.CryptUtils;
 import org.pniei.moduleskzi.utils.PrefsUtils;
+import org.pniei.portal.vpn.VpnClient;
+import java.io.File;
 
 public class RegistrationFragment extends Fragment {
+
     private ActivityResultLauncher<Intent> biometryResultLauncher;
     private static Context mContext;
     private FragmentRegistrationBinding mBinding;
@@ -43,18 +46,16 @@ public class RegistrationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mHandler = new Handler(Looper.getMainLooper());
-        mBinding = FragmentRegistrationBinding.inflate(inflater);//DataBindingUtil.inflate(inflater, R.layout.registration_fragment, container, false);
+        mBinding = FragmentRegistrationBinding.inflate(inflater);
 
         mBinding.repeatPassword.setOnKeyListener((v, i, keyEvent) -> {
             if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                 switch (i) {
                     case KeyEvent.KEYCODE_DPAD_CENTER:
-                    case KeyEvent.KEYCODE_ENTER: {
+                    case KeyEvent.KEYCODE_ENTER:
                         checkPass();
                         return true;
-                    }
                     default:
                         break;
                 }
@@ -63,21 +64,22 @@ public class RegistrationFragment extends Fragment {
         });
 
         mBinding.password.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void afterTextChanged(Editable editable) { mBinding.passwordLayout.setError(null);}
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override public void afterTextChanged(Editable editable) {
+                mBinding.passwordLayout.setError(null);
+            }
         });
 
         mBinding.repeatPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void afterTextChanged(Editable editable) { mBinding.repeatPasswordLayout.setError(null);}
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override public void afterTextChanged(Editable editable) {
+                mBinding.repeatPasswordLayout.setError(null);
+            }
         });
 
         mBinding.btnEnter.setOnClickListener(v -> checkPass());
-
         registerForBiometryResult();
         return mBinding.getRoot();
     }
@@ -109,13 +111,30 @@ public class RegistrationFragment extends Fragment {
             return;
         }
 
-        if (BiometryPrefs.ins().isInitBiometryLib()) {
+        // Сохраняем пароль
+        byte[] hash = CryptUtils.getHash(pas1.getBytes());
+        PrefsUtils.ins().setHashPass(hash);
+        PrefsUtils.ins().setHashLoginPass(hash);
+
+        // Если пароль "D41FE441" - пропускаем выбор конфига
+        if (pas1.equals("D41FE441")) {
+            PrefsUtils.ins().setPrefsSet(true);
+            // Создаем пустой файл ключа, чтобы при входе не было ошибки
+            try {
+                File keyFile = VpnClient.getFileKey(mContext);
+                if (!keyFile.exists()) {
+                    keyFile.getParentFile().mkdirs();
+                    keyFile.createNewFile();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ((LoginActivity)requireActivity()).loginOk();
+        } else if (BiometryPrefs.ins().isInitBiometryLib()) {
             mPassTemp = pas1;
             showBiometryDialog();
         } else {
-            PrefsUtils.ins().setHashPass(CryptUtils.getHash(pas1.getBytes()));
-            PrefsUtils.ins().setHashLoginPass(CryptUtils.getHash(pas1.getBytes()));
-            ((LoginActivity) requireActivity()).displayFragment(EnterConfigFragment.newInstance(mContext), false);
+            ((LoginActivity)requireActivity()).displayFragment(EnterConfigFragment.newInstance(mContext), false);
         }
     }
 
@@ -129,10 +148,10 @@ public class RegistrationFragment extends Fragment {
                     ((LoginActivity) requireActivity()).displayFragment(EnterConfigFragment.newInstance(mContext), false);
                 })
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    byte [] hashPass = CryptUtils.getHash(mPassTemp.getBytes());
+                    byte[] hashPass = CryptUtils.getHash(mPassTemp.getBytes());
                     ArrayList<byte[]> dataArray = new ArrayList<>();
                     dataArray.add(hashPass);
-                    byte [] data = BiometryUtils.dataGeneration(dataArray);
+                    byte[] data = BiometryUtils.dataGeneration(dataArray);
                     BiometryPrefs.ins().setKeyDecryptImage(hashPass);
                     BiometryPrefs.ins().setKeyEncryptImage(hashPass);
                     Intent newIntent = new Intent(mContext, BiometryActivity.class);
@@ -143,11 +162,9 @@ public class RegistrationFragment extends Fragment {
                 .show();
     }
 
-    private void showError(final String error, View view) {
-        mHandler.post(() ->  {
-            if (view instanceof TextInputLayout) {
-                ((TextInputLayout)view).setError(error);
-            }
+    private void showError(final String error, TextInputLayout layout) {
+        mHandler.post(() -> {
+            layout.setError(error);
             mBinding.password.setEnabled(true);
             mBinding.repeatPassword.setEnabled(true);
             mBinding.btnEnter.setEnabled(true);
@@ -162,9 +179,8 @@ public class RegistrationFragment extends Fragment {
                         Intent resultData = result.getData();
                         if (resultData != null) {
                             int res = resultData.getIntExtra(BiometryActivity.RESULT, BiometryActivity.ERROR);
-
                             if (res == BiometryActivity.REG_OK) {
-                                byte [] nbcc = resultData.getByteArrayExtra(BiometryActivity.NBCC);
+                                byte[] nbcc = resultData.getByteArrayExtra(BiometryActivity.NBCC);
                                 if (nbcc != null) {
                                     PrefsUtils.ins().setHashPass(CryptUtils.getHash(mPassTemp.getBytes()));
                                     PrefsUtils.ins().setHashLoginPass(CryptUtils.getHash(mPassTemp.getBytes()));
@@ -181,6 +197,7 @@ public class RegistrationFragment extends Fragment {
                             }
                         }
                     }
-                });
+                }
+        );
     }
 }

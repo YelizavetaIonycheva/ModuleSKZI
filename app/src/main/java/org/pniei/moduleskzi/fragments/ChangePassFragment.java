@@ -132,7 +132,6 @@ public class ChangePassFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mBinding.password.setText("");
-        PrefsUtils.ins().setAuth(false);
     }
 
     private void checkPass(String passHash) {

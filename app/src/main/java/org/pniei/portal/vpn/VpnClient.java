@@ -183,11 +183,7 @@ public class VpnClient {
             if (intent != null) {
                 activity.startActivityForResult(intent, REQUST_VPN);
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    activity.startForegroundService((new Intent(activity, VpnService.class)).setAction(VpnService.ACTION_RECONNECT));
-                } else {
-                    activity.startService((new Intent(activity, VpnService.class)).setAction(VpnService.ACTION_RECONNECT));
-                }
+                activity.startForegroundService((new Intent(activity, VpnService.class)).setAction(VpnService.ACTION_RECONNECT));
                 isWork = true;
             }
             return true;

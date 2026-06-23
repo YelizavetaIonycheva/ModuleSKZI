@@ -72,6 +72,8 @@ public class VpnClientReceiver extends BroadcastReceiver {
                 break;
             }
             case SHOW_QUALITY : {
+
+
                 mVpnClientReceiverCommands.showQuality(intent.getIntExtra(VPN_QUALITY, 0));
                 break;
             }

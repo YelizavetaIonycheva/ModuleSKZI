@@ -28,9 +28,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.preference.CheckBoxPreference;
 import androidx.preference.EditTextPreference;
-import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -48,7 +46,6 @@ import org.pniei.moduleskzi.utils.CryptUtils;
 import org.pniei.moduleskzi.utils.FileUtils;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 import org.pniei.moduleskzi.utils.Utils;
-import org.pniei.portal.services.MonitoringService;
 import org.pniei.portal.vpn.VpnClient;
 import java.io.File;
 import java.io.FileInputStream;
@@ -167,13 +164,6 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
             if(!PrefsUtils.ins().getIpSkzi().equals(newValue.toString())) {
                 PrefsUtils.ins().setIpSkzi(newValue.toString());
                 preference.setSummary(newValue.toString());
-
-                MonitoringService.stopMonitoringService(mContext);
-
-                if (PrefsUtils.ins().isVpnEnable()) {
-                    if(VpnClient.restartVpnService(getActivity()))
-                        MonitoringService.startMonitoringService(mContext);
-                }
             }
             return true;
         });
@@ -182,13 +172,6 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
             if(!PrefsUtils.ins().getIpMon().equals(newValue.toString())) {
                 PrefsUtils.ins().setIpMon(newValue.toString());
                 preference.setSummary(newValue.toString());
-
-                MonitoringService.stopMonitoringService(mContext);
-
-                if (PrefsUtils.ins().isVpnEnable()) {
-                    if(VpnClient.restartVpnService(getActivity()))
-                        MonitoringService.startMonitoringService(mContext);
-                }
             }
             return true;
         });
@@ -197,13 +180,6 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
             if(!PrefsUtils.ins().getIpDns().equals(newValue.toString())) {
                 PrefsUtils.ins().setIpDns(newValue.toString());
                 preference.setSummary(newValue.toString());
-
-                MonitoringService.stopMonitoringService(mContext);
-
-                if (PrefsUtils.ins().isVpnEnable()) {
-                    if(VpnClient.restartVpnService(getActivity()))
-                        MonitoringService.startMonitoringService(mContext);
-                }
             }
             return true;
         });
@@ -212,13 +188,6 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
             if(!PrefsUtils.ins().getIpDnsSecond().equals(newValue.toString())) {
                 PrefsUtils.ins().setIpDnsSecond(newValue.toString());
                 preference.setSummary(newValue.toString());
-
-                MonitoringService.stopMonitoringService(mContext);
-
-                if (PrefsUtils.ins().isVpnEnable()) {
-                    if(VpnClient.restartVpnService(getActivity()))
-                        MonitoringService.startMonitoringService(mContext);
-                }
             }
             return true;
         });
@@ -275,13 +244,6 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
         is_capture_all_apps.setOnPreferenceChangeListener( (preference, newValue) -> {
             PrefsUtils.ins().setCaptureAll((boolean)newValue);
 
-            MonitoringService.stopMonitoringService(mContext);
-
-            if (PrefsUtils.ins().isVpnEnable()) {
-                if(VpnClient.restartVpnService(getActivity()))
-                    MonitoringService.startMonitoringService(mContext);
-            }
-
             initKeyInfo();
 
             return true;
@@ -313,11 +275,6 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
             work_with_vpn.setOnPreferenceChangeListener((preference, newValue) -> {
                 PrefsUtils.ins().setVpnApps((Set<String>)newValue);
                 VpnClient.stopVpnService(mContext);
-                MonitoringService.stopMonitoringService(mContext);
-                if (PrefsUtils.ins().isVpnEnable()) {
-                    if(VpnClient.startVpnService(getActivity()))
-                        MonitoringService.startMonitoringService(mContext);
-                }
                 return true;
             });
 
@@ -661,8 +618,6 @@ public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
         );
 
     }
-
-
 
 
     @Override

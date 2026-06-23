@@ -65,12 +65,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginOk() {
-        PrefsUtils.ins().setAuth(true);
         mHandler.post(() -> {
             Intent newIntent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(newIntent);
             finish();
         });
+    }
+
+    public void setPrefsAndLogin() {
+        PrefsUtils.ins().setPrefsSet(true);
+        loginOk();
     }
     private boolean checkAndRequestNotifyPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

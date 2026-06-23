@@ -26,11 +26,6 @@ import java.util.zip.ZipOutputStream;
 public class Utils {
     public static int LENGTH_KEY = 32;
 
-    /*public interface TypeDocument {
-        int PASPORT = 0;
-    }*/
-
-
     public static String TYPE_DOC_ARG = "type_document";
 
     public static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {

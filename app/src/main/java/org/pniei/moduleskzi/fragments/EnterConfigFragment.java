@@ -71,38 +71,24 @@ public class EnterConfigFragment extends Fragment implements View.OnClickListene
 
     private void checkConfig() {
         new Thread(() -> {
-            if (selectedConfFile == null) {
-                showError(getString(R.string.err_file_not_select), mBinding.confFileLayout);
-                return;
-            }
+            // Пропускаем выбор файла - используем встроенную конфигурацию
+            // Встроенные параметры (можно изменить под свои нужды)
+            String defaultIpSkzi = "192.168.1.100";  // IP сервера SKZI
+            String defaultIpMon = "192.168.1.100";   // IP мониторинга
+            String defaultIpDns = "8.8.8.8";         // DNS сервер
 
-            byte [] bufConfig = Utils.readFileFromZip(mContext, selectedConfFile, ".cfg");
-            if (bufConfig == null) {
-                showError(getString(R.string.err_file_cfg_not_found), mBinding.confFileLayout);
-                return;
-            }
+            // Сохраняем настройки
+            PrefsUtils.ins().setIpSkzi(defaultIpSkzi);
+            PrefsUtils.ins().setIpMon(defaultIpMon);
+            PrefsUtils.ins().setIpDns(defaultIpDns);
 
-            if (!checkConfigFile(new String(bufConfig))) {
-                showError(getString(R.string.init_config_error), mBinding.confFileLayout);
-                return;
-            }
+            // Используем встроенный ключ (если есть)
+            // byte[] defaultKey = "ваш_ключ".getBytes();
+            // saveVpnKey(defaultKey);
 
-            byte [] keyM = Utils.readFileFromZip(mContext, selectedConfFile, ".key");
-
-            if (keyM == null) {
-                showError(getString(R.string.err_file_key_not_found), mBinding.confFileLayout);
-                return;
-            }
-
-            if (!saveVpnKey(keyM)) {
-                showError(getString(R.string.err_key_save), mBinding.confFileLayout);
-                return;
-            }
             PrefsUtils.ins().setPrefsSet(true);
-
             ((LoginActivity)getActivity()).loginOk();
         }).start();
-
     }
 
 

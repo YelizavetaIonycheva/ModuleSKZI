@@ -112,7 +112,6 @@ public class  RegLicenseActivity extends AppCompatActivity implements View.OnCli
             }
 
             if (Signature.ecpcontrol(checkSignKeyBuf, mDeviceId.getBytes(StandardCharsets.UTF_8)/*Utils.hexStringToByteArray(mDeviceId)*/, ecp) == 0) {
-                PrefsUtils.ins().setLicenseReg(true);
                 Intent newIntent = new Intent(RegLicenseActivity.this, LoginActivity.class);
                 startActivity(newIntent);
                 finish();

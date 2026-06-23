@@ -451,8 +451,6 @@ public class VpnConnection implements Runnable {
                 if (lenIn > 0) {
                     byte[] inBuffer = new byte[lenIn];
                     System.arraycopy(packet.array(), 0, inBuffer, 0, lenIn);
-                    //printFromTo(inBuffer);
-                    //Log.d(getTag(), "Local data size = " + lenIn);
                     localPackages.offer(inBuffer);
                     packet.clear();
                     lastTimeResponse = nowTime;
@@ -509,7 +507,6 @@ public class VpnConnection implements Runnable {
                     }
                 }
 
-                //if(SpoConfig.ins().isEnergySave()) {
                     long time = nowTime - lastTimeResponse;
                     if (time < 250) {
                         continue;
@@ -520,9 +517,9 @@ public class VpnConnection implements Runnable {
                     } else {
                         timeSleep = 250;
                     }
-                    //Log.i(getTag(), "Sleep = " + timeSleep);
+
                     Thread.sleep(timeSleep);
-                //}
+
             }
         } catch (IOException | InterruptedException | IllegalStateException | IllegalArgumentException e) {
             event = Event.ERROR;
@@ -541,7 +538,6 @@ public class VpnConnection implements Runnable {
             localDataThread.interrupt();
             skziDataThread.interrupt();
             pingThread.interrupt();
-            //checkTimeSaThread.interrupt();
             ManagerLiveData.ins().setVpnQuality(ManagerLiveData.VpnQuality.VPN_ENABLE);
             VpnClient.ins().setConnected(false);
         }

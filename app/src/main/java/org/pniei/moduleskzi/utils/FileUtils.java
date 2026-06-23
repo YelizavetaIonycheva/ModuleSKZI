@@ -84,10 +84,6 @@ public class FileUtils {
                         for (String contentUriPrefix : contentUriPrefixesToTry) {
                             try {
                                 final Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), Long.valueOf(id));
-
-                         /*   final Uri contentUri = ContentUris.withAppendedId(
-                                    Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));*/
-
                                 return getDataColumn(context, contentUri, null, null);
                             } catch (NumberFormatException e) {
                                 //In Android 8 and Android P the id is not a number

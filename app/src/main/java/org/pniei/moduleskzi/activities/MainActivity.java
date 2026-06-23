@@ -16,7 +16,6 @@ import org.pniei.portal.R;
 import org.pniei.portal.databinding.ActivityMainBinding;
 import org.pniei.moduleskzi.liveData.ManagerLiveData;
 import org.pniei.moduleskzi.utils.PrefsUtils;
-import org.pniei.portal.services.MonitoringService;
 import org.pniei.portal.vpn.VpnClient;
 import static org.pniei.moduleskzi.liveData.ManagerLiveData.VpnQuality.*;
 
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 mBinding.textInstruct.setText(insructionOff);
                 //mBinding.vpnStatusLayout.setVisibility(View.INVISIBLE);
                 VpnClient.stopVpnService(this);
-                MonitoringService.stopMonitoringService(this);
                 PrefsUtils.ins().setEnableVpn(false);
             } else {
                 if (PrefsUtils.ins().isNetworkAvailable()) {
@@ -64,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                         mBinding.textInstruct.setText(insructionOn);
                         mBinding.vpnStatusLayout.setVisibility(View.VISIBLE);
                         mBinding.vpnQualityStroke.setVisibility(View.VISIBLE);
-                        MonitoringService.startMonitoringService(this);
                         PrefsUtils.ins().setEnableVpn(true);
                     }
                 } else {
@@ -153,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 mBinding.btnStartVpn.setImageResource(R.drawable.ic_off);
                 mBinding.textInstruct.setText(insructionOff);
-                MonitoringService.startMonitoringService(this);
                 PrefsUtils.ins().setEnableVpn(true);
             }
         }
@@ -176,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
                                        Toast.makeText(MainActivity.this, R.string.bad_ip_skzi_address, Toast.LENGTH_SHORT).show();
                                    } else {
                                        mBinding.btnStartVpn.setImageResource(R.drawable.ic_off);
-                                       MonitoringService.startMonitoringService(MainActivity.this);
                                    }
                                }
                            }

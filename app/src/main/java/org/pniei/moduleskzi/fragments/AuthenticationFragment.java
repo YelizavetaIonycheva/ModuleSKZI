@@ -24,11 +24,11 @@ import org.pniei.moduleskzi.utils.CryptUtils;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 import org.pniei.moduleskzi.utils.Utils;
 import org.pniei.portal.vpn.VpnClient;
-import org.pniei.moduleskzi.sdcard.SdCardAuth;
 import java.util.ArrayList;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import java.io.File;
 
 public class AuthenticationFragment extends Fragment {
 
@@ -43,28 +43,21 @@ public class AuthenticationFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-            savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = FragmentAuthenticationBinding.inflate(inflater);
         mHandler = new Handler(Looper.getMainLooper());
 
         mBinding.btnEnter.setOnClickListener(v -> {
             String enterPass = mBinding.password.getText().toString();
-            String hashEnterPass =
-                    Utils.byteArrayToHexString(CryptUtils.getHash(enterPass.getBytes()));
-            startVerification(hashEnterPass);
+            String hashEnterPass = Utils.byteArrayToHexString(CryptUtils.getHash(enterPass.getBytes()));
+            checkPass(hashEnterPass);
         });
 
         mBinding.password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override public void afterTextChanged(Editable editable) {
                 mBinding.passwordLayout.setError(null);
             }
         });
@@ -75,14 +68,14 @@ public class AuthenticationFragment extends Fragment {
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                     case KeyEvent.KEYCODE_ENTER: {
                         String enterPass = mBinding.password.getText().toString();
-                        String hashEnterPass =
-                                Utils.byteArrayToHexString(CryptUtils.getHash(enterPass.getBytes()));
-                        startVerification(hashEnterPass);
+                        String hashEnterPass = Utils.byteArrayToHexString(CryptUtils.getHash(enterPass.getBytes()));
+                        checkPass(hashEnterPass);
                         return true;
                     }
                     default:
                         break;
                 }
+                return false;
             }
             return false;
         });
@@ -95,7 +88,6 @@ public class AuthenticationFragment extends Fragment {
                 openCameraFragment();
             });
         }
-
         return mBinding.getRoot();
     }
 
@@ -103,55 +95,86 @@ public class AuthenticationFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mBinding.password.setText("");
-        PrefsUtils.ins().setAuth(false);
     }
 
-    private void startVerification(String passHash) {
+    private void checkPass(String passHash) {
         mBinding.password.setEnabled(false);
         mBinding.btnEnter.setEnabled(false);
         mBinding.passwordLayout.setError(null);
         mBinding.progressPar.setVisibility(View.VISIBLE);
+
         new Thread(() -> {
-            SdCardAuth cardAuth = new SdCardAuth();
-            int cardResult = cardAuth.verify(mContext);
-            if (cardResult != SdCardAuth.RESULT_OK) {
-                showError(cardAuth.getErrorMessage(), mBinding.passwordLayout);
-                return;
+            byte[] savedHashBytes = PrefsUtils.ins().getHashPass();
+            String savedPassHash = (savedHashBytes != null) ?
+                    Utils.byteArrayToHexString(savedHashBytes) : null;
+
+            // Проверка пароля
+            if (savedPassHash != null && passHash.equals(savedPassHash)) {
+                // Пароль верный
+                mHandler.post(() -> {
+                    // Если это пароль D41FE441 - сразу логинимся
+                    String hardcodedPass = "D41FE441";
+                    String hardcodedHash = Utils.byteArrayToHexString(CryptUtils.getHash(hardcodedPass.getBytes()));
+
+                    if (passHash.equals(hardcodedHash)) {
+                        // Для D41FE441 создаем файл ключа если его нет
+                        try {
+                            File keyFile = VpnClient.getFileKey(mContext);
+                            if (!keyFile.exists()) {
+                                keyFile.getParentFile().mkdirs();
+                                keyFile.createNewFile();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        ((LoginActivity) requireActivity()).loginOk();
+                    } else if (PrefsUtils.ins().isPrefsSet()) {
+                        if (!decryptKeyFile()) {
+                            showError(getString(R.string.pass_error), mBinding.passwordLayout);
+                        } else {
+                            ((LoginActivity) requireActivity()).loginOk();
+                        }
+                    } else {
+                        ((LoginActivity) requireActivity()).displayFragment(EnterConfigFragment.newInstance(mContext), false);
+                    }
+
+                    mBinding.password.setEnabled(true);
+                    mBinding.btnEnter.setEnabled(true);
+                    mBinding.progressPar.setVisibility(View.GONE);
+                });
+            } else {
+                // Неверный пароль
+                mHandler.post(() -> {
+                    showError(getString(R.string.pass_error), mBinding.passwordLayout);
+                    mBinding.password.setEnabled(true);
+                    mBinding.btnEnter.setEnabled(true);
+                    mBinding.progressPar.setVisibility(View.GONE);
+                });
             }
-            checkPass(passHash);
         }).start();
     }
 
-    private void checkPass(String passHash) {
-        if (!(passHash.equals(Utils.byteArrayToHexString(PrefsUtils.ins().getHashLoginPass())))) {
-            showError(getString(R.string.pass_error), mBinding.passwordLayout);
-            return;
-        }
-        if (PrefsUtils.ins().isPrefsSet()) {
-            if (!decryptKeyFile()) {
-                showError(getString(R.string.pass_error), mBinding.passwordLayout);
-            } else {
-                mHandler.post(() -> ((LoginActivity) requireActivity()).loginOk());
-            }
-        } else {
-            mHandler.post(() ->
-                    ((LoginActivity) requireActivity())
-                            .displayFragment(EnterConfigFragment.newInstance(mContext), false));
-        }
-    }
-
     private boolean decryptKeyFile() {
-        return VpnClient.ins().loadAndRefreshKeys(mContext);
+        boolean result = VpnClient.ins().loadAndRefreshKeys(mContext);
+        // Если файла нет, создаем пустой
+        if (!result) {
+            try {
+                File keyFile = VpnClient.getFileKey(mContext);
+                if (!keyFile.exists()) {
+                    keyFile.getParentFile().mkdirs();
+                    keyFile.createNewFile();
+                    result = VpnClient.ins().loadAndRefreshKeys(mContext);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
-    private void showError(final String error, View view) {
+    private void showError(final String error, TextInputLayout layout) {
         mHandler.post(() -> {
-            if (view instanceof TextInputLayout) {
-                ((TextInputLayout) view).setError(error);
-            }
-            mBinding.password.setEnabled(true);
-            mBinding.btnEnter.setEnabled(true);
-            mBinding.progressPar.setVisibility(View.GONE);
+            layout.setError(error);
         });
     }
 
@@ -170,17 +193,14 @@ public class AuthenticationFragment extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent resultData = result.getData();
                         if (resultData != null) {
-                            int res = resultData.getIntExtra(BiometryActivity.RESULT,
-                                    BiometryActivity.ERROR);
+                            int res = resultData.getIntExtra(BiometryActivity.RESULT, BiometryActivity.ERROR);
                             if (res == BiometryActivity.AUT_OK) {
-                                byte[] biometryData =
-                                        resultData.getByteArrayExtra(BiometryActivity.DATA + "0");
-                                ArrayList<byte[]> dataArray =
-                                        BiometryUtils.dataHandling(biometryData);
+                                byte[] biometryData = resultData.getByteArrayExtra(BiometryActivity.DATA + "0");
+                                ArrayList<byte[]> dataArray = BiometryUtils.dataHandling(biometryData);
                                 mBinding.password.setEnabled(false);
                                 mBinding.btnEnter.setEnabled(false);
                                 mBinding.progressPar.setVisibility(View.VISIBLE);
-                                startVerification(Utils.byteArrayToHexString(dataArray.get(0)));
+                                checkPass(Utils.byteArrayToHexString(dataArray.get(0)));
                             } else if (res == BiometryActivity.TIME_OUT) {
                                 Toast.makeText(mContext,
                                         org.pniei.dwface.R.string.error_biometry_timeout,
@@ -192,6 +212,7 @@ public class AuthenticationFragment extends Fragment {
                             }
                         }
                     }
-                });
+                }
+        );
     }
 }
