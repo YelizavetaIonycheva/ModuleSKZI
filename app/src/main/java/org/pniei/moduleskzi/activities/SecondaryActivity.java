@@ -1,7 +1,6 @@
 package org.pniei.moduleskzi.activities;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -48,7 +47,7 @@ public class SecondaryActivity extends AppCompatActivity {
                 }
 
                 case ABOUT_FRAGMENT : {
-                    currentFragment = AboutFragment.newInstance(this);
+                    currentFragment = AboutFragment.newInstance();
                     break;
                 }
             }

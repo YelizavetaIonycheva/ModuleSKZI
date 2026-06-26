@@ -55,7 +55,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.pniei.moduleskzi.fragments.ChangePassFragment;
 
 public class AllSettingsScreenFragment extends PreferenceFragmentCompat {
     private PreferenceScreen mPreferenceScreen;

@@ -42,27 +42,34 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.usb.host" android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"
+        tools:ignore="ForegroundServicesPolicy" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.ModuleSKZI">
+        android:theme="@style/Theme.ModuleSKZI"
+        tools:ignore="DataExtractionRules">
 
         <activity android:name="org.pniei.moduleskzi.activities.LauncherActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:screenOrientation="fullSensor"
+            android:exported="true"
+            tools:ignore="DiscouragedApi">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -75,35 +82,37 @@
                 android:resource="@xml/usb_device_filter"/>
         </activity>
 
-        <!-- RegLicenseActivity — УДАЛЕНА -->
-
         <activity
             android:name="org.pniei.moduleskzi.activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:screenOrientation="fullSensor"
+            android:exported="true"
+            tools:ignore="DiscouragedApi">
         </activity>
         <activity android:name="org.pniei.moduleskzi.activities.SecondaryActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            tools:ignore="DiscouragedApi" />
         <activity android:name="org.pniei.moduleskzi.activities.LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            tools:ignore="DiscouragedApi">
         </activity>
         <activity android:name="org.pniei.dwface.biometry.BiometryActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            tools:ignore="DiscouragedApi">
         </activity>
         <activity android:name="org.pniei.moduleskzi.qrcode.QRCodeScanActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible">
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="stateVisible"
+            tools:ignore="DiscouragedApi">
         </activity>
 
-        <service android:name="org.pniei.portal.services.MonitoringService"
-            android:foregroundServiceType="dataSync"/>
         <service android:name="org.pniei.portal.vpn.VpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:foregroundServiceType="dataSync"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="VpnServicePolicy">
             <intent-filter>
                 <action android:name="android.net.VpnService"/>
             </intent-filter>

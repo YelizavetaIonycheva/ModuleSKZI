@@ -1,6 +1,5 @@
 package org.pniei.moduleskzi.fragments;
 
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,10 +11,8 @@ import androidx.fragment.app.Fragment;
 import org.pniei.portal.R;
 
 public class AboutFragment extends Fragment {
-    private static Context mContext;
 
-    public static AboutFragment newInstance(Context context) {
-        mContext = context;
+    public static AboutFragment newInstance() {
         return new AboutFragment();
     }
 

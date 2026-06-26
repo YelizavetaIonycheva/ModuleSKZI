@@ -24,11 +24,13 @@ import org.pniei.moduleskzi.qrcode.QRCodeScanActivity;
 import org.pniei.moduleskzi.utils.PrefsUtils;
 import org.pniei.moduleskzi.utils.Signature;
 import org.pniei.moduleskzi.utils.Utils;
+import org.pniei.moduleskzi.utils.CornetManager; // Подключаем менеджер протокола Корнет
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public class  RegLicenseActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegLicenseActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityResultLauncher<Intent> selectFileResultLauncher;
     private ActivityResultLauncher<Intent> qrcodeActivityResultLauncher;
     private ActivityRegLicenseBinding mBinding;
@@ -98,7 +100,7 @@ public class  RegLicenseActivity extends AppCompatActivity implements View.OnCli
         mBinding.progressPar.setVisibility(View.VISIBLE);
 
         new Thread(() -> {
-            if (licenseCode == null && licenseCode.length() == 0) {
+            if (licenseCode == null || licenseCode.length() == 0) {
                 showError(getString(R.string.license_number_not_enter), mBinding.licenseNumberLayout);
                 return;
             }
@@ -111,20 +113,34 @@ public class  RegLicenseActivity extends AppCompatActivity implements View.OnCli
                 return;
             }
 
-            if (Signature.ecpcontrol(checkSignKeyBuf, mDeviceId.getBytes(StandardCharsets.UTF_8)/*Utils.hexStringToByteArray(mDeviceId)*/, ecp) == 0) {
-                Intent newIntent = new Intent(RegLicenseActivity.this, LoginActivity.class);
-                startActivity(newIntent);
-                finish();
+            // 1. Сначала базовая проверка электронной цифровой подписи (лицензии СКЗИ)
+            if (Signature.ecpcontrol(checkSignKeyBuf, mDeviceId.getBytes(StandardCharsets.UTF_8), ecp) == 0) {
+
+                // 2. Внедрение протокола Корнет: Инициализируем конфигурацию с SD-карты
+                boolean isCornetInitialized = CornetManager.getInstance().initializeFromSDCard();
+
+                if (isCornetInitialized) {
+                    // Всё успешно пройдено: Лицензия СКЗИ верна + Конфиг Корнета валиден
+                    Intent newIntent = new Intent(RegLicenseActivity.this, LoginActivity.class);
+                    startActivity(newIntent);
+                    finish();
+                } else {
+                    // Ошибка: файл конфигурации отсутствует или CRC32 поврежден
+                    showError("Ошибка протокола Корнет: файл конфигурации на SD-карте не найден или поврежден (CRC32 error)", mBinding.licenseNumberLayout);
+                }
+
             } else {
                 showError(getString(R.string.license_number_error), mBinding.licenseNumberLayout);
             }
         }).start();
     }
 
-    private void showError(final String error, View view) {
+    private void showError(final String error, final View view) {
         mHandler.post(() ->  {
             if (view instanceof TextInputLayout) {
                 ((TextInputLayout)view).setError(error);
+            } else {
+                Toast.makeText(RegLicenseActivity.this, error, Toast.LENGTH_LONG).show();
             }
             mBinding.licenseNumber.setEnabled(true);
             mBinding.btnCheck.setEnabled(true);
@@ -143,14 +159,16 @@ public class  RegLicenseActivity extends AppCompatActivity implements View.OnCli
                             DocumentFile selectedFile = DocumentFile.fromSingleUri(RegLicenseActivity.this, fileUri);
                             if (selectedFile != null) {
                                 try (InputStream is = getContentResolver().openInputStream(selectedFile.getUri())) {
-                                    byte [] data = new byte[is.available()];
-                                    is.read(data);
+                                    if (is != null) {
+                                        byte[] data = new byte[is.available()];
+                                        int read = is.read(data);
 
-                                    if (checkCodeLicense(data)) {
-                                        String codeLicense = new String(data);
-                                        mBinding.licenseNumber.setText(codeLicense);
-                                        mBinding.licenseNumberLayout.setError(null);
-                                        return;
+                                        if (read > 0 && checkCodeLicense(data)) {
+                                            String codeLicense = new String(data, StandardCharsets.UTF_8);
+                                            mBinding.licenseNumber.setText(codeLicense);
+                                            mBinding.licenseNumberLayout.setError(null);
+                                            return;
+                                        }
                                     }
                                 } catch (IOException e) {
                                     e.printStackTrace();
@@ -188,11 +206,11 @@ public class  RegLicenseActivity extends AppCompatActivity implements View.OnCli
                 });
     }
 
-    private boolean checkCodeLicense(byte data[]) {
+    private boolean checkCodeLicense(byte[] data) {
         final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
         boolean isFind = false;
 
-        if (data.length != 56)
+        if (data == null || data.length != 56)
             return false;
 
         for (byte b : data) {
@@ -209,5 +227,4 @@ public class  RegLicenseActivity extends AppCompatActivity implements View.OnCli
 
         return true;
     }
-
 }
